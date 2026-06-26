@@ -415,12 +415,20 @@ function updateF(arr,id,field,val){
   rec[field]=val;
   persist();
 
-  // ── REGLA: si lead cambia etapa a "Administrando" → mover a Inmuebles
+  // ── REGLA: lead etapa → Administrando
   if(arr==='leads' && field==='etapa' && val==='Administrando'){
     moverLeadAInmuebles(id); return;
   }
-  // ── REGLA: si cliente cambia etapa a "Cerrado" → mover a Inmuebles
+  // ── REGLA: lead estadoInm → Administrando
+  if(arr==='leads' && field==='estadoInm' && val==='Administrando'){
+    moverLeadAInmuebles(id); return;
+  }
+  // ── REGLA: cliente etapa → Cerrado
   if(arr==='clientes' && field==='etapa' && val==='Cerrado'){
+    moverClienteAInmuebles(id); return;
+  }
+  // ── REGLA: cliente estadoInm → Administrando
+  if(arr==='clientes' && field==='estadoInm' && val==='Administrando'){
     moverClienteAInmuebles(id); return;
   }
 
@@ -638,7 +646,7 @@ function openDetail(id,type){
     <div class="det-av" style="background:${av.bg};color:${av.c}">${ini(rec.nombre)}</div>
     <div class="det-name">${rec.nombre}</div>
     <div class="det-meta">${bdg(rec.etapa,'etapa')} ${bdg(rec.prioridad,'prioridad')}</div>`;
-  const etapas=type==='lead'?['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación','Administrando']:['Visita agendada','Propuesta enviada','En negociación','Cerrado'];
+  const etapas=type==='lead'?['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación','Administrando']:['Visita agendada','Propuesta enviada','En negociación','Administrando','Cerrado'];
   document.getElementById('det-body').innerHTML=`
     <div class="det-sec">Datos</div>
     <div class="irow"><span class="ikey">Teléfono</span><span class="ival">${rec.tel||'—'}</span></div>
@@ -677,7 +685,7 @@ function changeEtapa(id,type,etapa){
     moverLeadAInmuebles(id);
     return;
   }
-  if(type==='cliente' && etapa==='Cerrado'){
+  if(type==='cliente' && (etapa==='Cerrado' || etapa==='Administrando')){
     closeDetail();
     moverClienteAInmuebles(id);
     return;
