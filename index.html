@@ -419,12 +419,39 @@ function updateF(arr,id,field,val){
   if(arr==='leads' && field==='etapa' && val==='Administrando'){
     moverLeadAInmuebles(id); return;
   }
-  // ── REGLA: si cliente cambia etapa a "Cerrado" → notificar
+  // ── REGLA: si cliente cambia etapa a "Cerrado" → mover a Inmuebles
   if(arr==='clientes' && field==='etapa' && val==='Cerrado'){
-    toast('✅ Cliente cerrado — movido al historial');
+    moverClienteAInmuebles(id); return;
   }
 
   renderAll();
+}
+
+// ── MOVER CLIENTE CERRADO → INMUEBLES ───────────────
+function moverClienteAInmuebles(clienteId){
+  const cli=clientes.find(x=>x.id===clienteId);
+  if(!cli)return;
+  cli.etapa='Cerrado';
+
+  const nuevo={
+    id:nextId++,
+    nombre: cli.inmueble||cli.nombre,
+    propietario: cli.nombre,
+    sector:'',
+    tipo:'Apartamento',
+    estado:'Administrando',
+    plataforma:'',
+    prioridad: cli.prioridad,
+    nota: cli.nota||'',
+  };
+  inmuebles.push(nuevo);
+  clientes=clientes.filter(x=>x.id!==clienteId);
+  persist();
+  renderAll();
+  toast(`✅ "${nuevo.nombre}" cerrado y movido a Inmuebles`);
+  setTimeout(()=>{
+    switchTab('inmuebles', document.getElementById('tab-inmuebles'));
+  }, 800);
 }
 
 // ── MOVER LEAD → INMUEBLES ────────────────────────
@@ -648,6 +675,11 @@ function changeEtapa(id,type,etapa){
   if(type==='lead' && etapa==='Administrando'){
     closeDetail();
     moverLeadAInmuebles(id);
+    return;
+  }
+  if(type==='cliente' && etapa==='Cerrado'){
+    closeDetail();
+    moverClienteAInmuebles(id);
     return;
   }
   openDetail(id,type);
