@@ -295,6 +295,10 @@
     <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>
     Clientes <span class="tab-count" id="tc-clientes">0</span>
   </button>
+  <button class="tab" id="tab-inmuebles" onclick="switchTab('inmuebles',this)">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    Inmuebles <span class="tab-count" id="tc-inmuebles">0</span>
+  </button>
 </nav>
 
 <main class="main">
@@ -382,6 +386,33 @@
     </div>
   </div>
 
+
+  <!-- INMUEBLES -->
+  <div id="view-inmuebles" class="view">
+    <div class="toolbar">
+      <div class="search">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Buscar propiedad o propietario…" id="search-inmuebles" oninput="renderInmuebles()">
+      </div>
+      <select class="fsel" id="filter-inm-estado" onchange="renderInmuebles()">
+        <option value="">Todos los estados</option>
+        <option>Administrando</option><option>Disponible</option>
+        <option>Ocupado</option><option>Publicado</option><option>En negociación</option><option>En venta</option>
+      </select>
+      <button class="btn btn-dark" onclick="openModalInmueble()">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Nuevo inmueble
+      </button>
+    </div>
+    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
+      <table>
+        <thead><tr>
+          <th>Propiedad</th><th>Propietario</th><th>Sector</th><th>Tipo</th><th>Estado</th><th>Plataforma</th><th>Prioridad</th><th>Notas</th><th></th>
+        </tr></thead>
+        <tbody id="inmuebles-tbody"></tbody>
+      </table>
+    </div>
+  </div>
 </main>
 
 <!-- DETAIL PANEL -->
@@ -447,6 +478,39 @@
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closeContactModal()">Cancelar</button>
       <button class="btn btn-dark" id="modal-save-btn" onclick="saveContact()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- NEW INMUEBLE MODAL -->
+<div class="modal-bg" id="inmueble-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Nuevo inmueble</span>
+      <button class="modal-x" onclick="closeInmuebleModal()">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="fg2">
+      <div class="fg"><label class="fl">Propiedad / Referencia *</label><input class="fc" id="i-nombre" placeholder="Ej: Apto Betania 302"></div>
+      <div class="fg"><label class="fl">Propietario</label><input class="fc" id="i-propietario" placeholder="Nombre del propietario"></div>
+      <div class="fg"><label class="fl">Sector / Barrio</label><input class="fc" id="i-sector" placeholder="Ej: Betania"></div>
+      <div class="fg"><label class="fl">Tipo</label>
+        <select class="fc" id="i-tipo"><option>Apartamento</option><option>Casa</option><option>Estudio</option><option>Local</option><option>Cabaña</option><option>Lote</option></select>
+      </div>
+      <div class="fg"><label class="fl">Estado</label>
+        <select class="fc" id="i-estado"><option>Administrando</option><option>Disponible</option><option>Ocupado</option><option>Publicado</option><option>En negociación</option><option>En venta</option><option>Mantenimiento</option></select>
+      </div>
+      <div class="fg"><label class="fl">Plataforma</label><input class="fc" id="i-plataforma" placeholder="Airbnb, Booking, etc."></div>
+      <div class="fg"><label class="fl">Prioridad</label>
+        <select class="fc" id="i-prio"><option>Alta</option><option selected>Media</option><option>Baja</option></select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Notas</label><input class="fc" id="i-nota" placeholder="Observaciones"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeInmuebleModal()">Cancelar</button>
+      <button class="btn btn-dark" onclick="saveInmueble()">Guardar inmueble</button>
     </div>
   </div>
 </div>
@@ -523,6 +587,7 @@ function switchTab(id,btn){
   if(id==='dashboard')renderDashboard();
   if(id==='leads')renderLeads();
   if(id==='clientes')renderClientes();
+  if(id==='inmuebles')renderInmuebles();
 }
 function updateCounts(){
   document.getElementById('tc-leads').textContent=leads.length;
@@ -531,10 +596,10 @@ function updateCounts(){
 
 // ── DASHBOARD ─────────────────────────────────────
 function renderDashboard(){
-  const totalInm = leads.length + clientes.length;
-  const dispInm  = [...leads,...clientes].filter(x=>x.estadoInm==='Disponible').length;
-  const negInm   = [...leads,...clientes].filter(x=>x.estadoInm==='En negociación').length;
-  const admInm   = [...leads,...clientes].filter(x=>x.estadoInm==='Administrando').length;
+  const totalInm = inmuebles.length;
+  const dispInm  = inmuebles.filter(x=>x.estado==='Disponible').length;
+  const negInm   = inmuebles.filter(x=>x.estado==='En negociación').length;
+  const admInm   = inmuebles.filter(x=>x.estado==='Administrando').length;
   document.getElementById('m-inmuebles').innerHTML=`
     <div class="metric"><div class="metric-label">Total en gestión</div><div class="metric-val">${totalInm}</div></div>
     <div class="metric salvia"><div class="metric-label">Administrando</div><div class="metric-val">${admInm}</div></div>
@@ -749,8 +814,71 @@ function doDelete(){
 document.getElementById('contact-modal').addEventListener('click',function(e){if(e.target===this)closeContactModal();});
 document.getElementById('confirm-modal').addEventListener('click',function(e){if(e.target===this)closeConfirm();});
 
+
+// ── INMUEBLES ─────────────────────────────────────
+let inmuebles = [
+  {id:100,nombre:'Camino de Alcázar',propietario:'Cecilia',sector:'Camino de Alcázar',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb / Booking',prioridad:'Media',nota:''},
+  {id:101,nombre:'Casa Magdalena',propietario:'Mabel',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
+  {id:102,nombre:'Palmanova',propietario:'Mabel',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
+  {id:103,nombre:'Firenze',propietario:'Camilo',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
+  {id:104,nombre:'Casa Juliana',propietario:'Nurys / Juan Carlos',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
+];
+let nextInmId = 110;
+
+function renderInmuebles(){
+  const q=(document.getElementById('search-inmuebles').value||'').toLowerCase();
+  const ef=document.getElementById('filter-inm-estado').value;
+  const list=inmuebles.filter(i=>{
+    const m=i.nombre.toLowerCase().includes(q)||(i.propietario||'').toLowerCase().includes(q);
+    return m&&(!ef||i.estado===ef);
+  });
+  document.getElementById('tc-inmuebles').textContent=inmuebles.length;
+  const tbody=document.getElementById('inmuebles-tbody');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin inmuebles</td></tr>';return;}
+  tbody.innerHTML=list.map(i=>`<tr>
+    <td><div class="name-cell"><div class="avatar" style="background:var(--salvia-l);color:var(--salvia)"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></div><div><div class="cname">${i.nombre}</div></div></div></td>
+    <td style="font-size:12px;">${i.propietario||'—'}</td>
+    <td style="font-size:12px;color:var(--gray);">${i.sector||'—'}</td>
+    <td style="font-size:12px;color:var(--gray);">${i.tipo||'—'}</td>
+    <td>${bdg(i.estado,'estadoInm')}</td>
+    <td style="font-size:12px;color:var(--gray);">${i.plataforma||'—'}</td>
+    <td>${bdg(i.prioridad,'prioridad')}</td>
+    <td style="font-size:11px;color:var(--gray);max-width:140px;">${i.nota||'—'}</td>
+    <td><button class="btn btn-red btn-xs" onclick="deleteInmueble(${i.id})">✕</button></td>
+  </tr>`).join('');
+}
+
+function openModalInmueble(){document.getElementById('inmueble-modal').classList.add('open');}
+function closeInmuebleModal(){document.getElementById('inmueble-modal').classList.remove('open');['i-nombre','i-propietario','i-sector','i-plataforma','i-nota'].forEach(id=>document.getElementById(id).value='');}
+
+function saveInmueble(){
+  const nombre=document.getElementById('i-nombre').value.trim();
+  if(!nombre){alert('El nombre es obligatorio.');return;}
+  inmuebles.push({
+    id:nextInmId++, nombre,
+    propietario:document.getElementById('i-propietario').value.trim(),
+    sector:document.getElementById('i-sector').value.trim(),
+    tipo:document.getElementById('i-tipo').value,
+    estado:document.getElementById('i-estado').value,
+    plataforma:document.getElementById('i-plataforma').value.trim(),
+    prioridad:document.getElementById('i-prio').value,
+    nota:document.getElementById('i-nota').value.trim(),
+  });
+  closeInmuebleModal();
+  renderInmuebles(); renderDashboard();
+}
+
+function deleteInmueble(id){
+  if(!confirm('¿Eliminar este inmueble?')) return;
+  inmuebles=inmuebles.filter(i=>i.id!==id);
+  renderInmuebles(); renderDashboard();
+}
+
+document.getElementById('inmueble-modal').addEventListener('click',function(e){if(e.target===this)closeInmuebleModal();});
+
 // ── INIT ─────────────────────────────────────────
 updateCounts();
+document.getElementById('tc-inmuebles').textContent=inmuebles.length;
 renderDashboard();
 </script>
 </body>
