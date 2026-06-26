@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLÜM GROUP · CRM</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --carbon:   #2C2C2C;
+    --salvia:   #6B8E6B;
+    --salvia-l: #E8F0E8;
+    --salvia-m: #8FA68F;
+    --terra:    #B08968;
+    --terra-l:  #F5EDE4;
+    --white:    #FFFFFF;
+    --bg:       #F7F6F3;
+    --bg2:      #F0EEE9;
+    --border:   #E2DDD6;
+    --gray:     #888888;
+    --red:      #C0392B;
+    --red-l:    #FCECEA;
+    --amber:    #8A5A00;
+    --amber-l:  #FEF3DB;
+  }
+
+  html, body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--carbon);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--carbon);
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { color: var(--white); font-size: 15px; font-weight: 500; letter-spacing: -.2px; }
+  .logo span { color: var(--salvia-m); font-weight: 300; margin-left: 6px; font-size: 13px; }
+  .topbar-right { display: flex; gap: 8px; align-items: center; }
+
+  /* ── STRIPE ── */
+  .stripe { height: 3px; background: var(--salvia); }
+
+  /* ── NAV TABS ── */
+  .nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 2px; }
+  .tab {
+    padding: 13px 16px 12px;
+    font-size: 13px; font-weight: 500;
+    color: var(--gray);
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; gap: 6px;
+    transition: color .15s;
+  }
+  .tab:hover { color: var(--carbon); }
+  .tab.active { color: var(--carbon); border-bottom-color: var(--carbon); }
+  .tab-count {
+    font-size: 10px; background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 1px 6px; color: var(--gray); font-weight: 400;
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 20px 24px 40px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    height: 32px; padding: 0 14px; border-radius: 8px; font-size: 12px;
+    font-weight: 500; cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 5px; transition: opacity .15s;
+  }
+  .btn-dark { background: var(--carbon); color: var(--white); border: none; }
+  .btn-dark:hover { opacity: .85; }
+  .btn-outline { background: var(--white); color: var(--gray); border: 1px solid var(--border); }
+  .btn-outline:hover { background: var(--bg); color: var(--carbon); }
+  .btn-red { background: var(--red-l); color: var(--red); border: 1px solid #f5c0bb; }
+  .btn-red:hover { background: #f7d0cc; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    border-radius: 20px; padding: 2px 9px; white-space: nowrap;
+  }
+  .b-salvia   { background: var(--salvia-l); color: var(--salvia); }
+  .b-terra    { background: var(--terra-l);  color: var(--terra); }
+  .b-amber    { background: var(--amber-l);  color: var(--amber); }
+  .b-red      { background: var(--red-l);    color: var(--red); }
+  .b-gray     { background: var(--bg2);      color: var(--gray); }
+  .b-salvia-m { background: var(--salvia-l); color: var(--salvia-m); }
+
+  /* ── DASHBOARD METRICS ── */
+  .metrics-section { margin-bottom: 20px; }
+  .section-label {
+    font-size: 10px; font-weight: 600; color: var(--white);
+    text-transform: uppercase; letter-spacing: .5px;
+    background: var(--salvia); padding: 7px 14px;
+    border-radius: 8px 8px 0 0; display: inline-block;
+  }
+  .section-label.terra { background: var(--terra); }
+  .section-label.carbon { background: var(--carbon); }
+  .section-label.red { background: var(--red); }
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-top: none; border-radius: 0 8px 8px 8px; overflow: hidden;
+  }
+  .metric {
+    background: var(--white); padding: 14px 16px;
+    display: flex; flex-direction: column;
+  }
+  .metric-label { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .metric-val   { font-size: 32px; font-weight: 600; color: var(--carbon); line-height: 1; }
+  .metric.salvia .metric-val { color: var(--salvia); }
+  .metric.terra  .metric-val { color: var(--terra); }
+  .metric.amber  .metric-val { color: var(--amber); }
+  .metric.red    .metric-val { color: var(--red); }
+
+  /* ── PRIORITY TABLE ── */
+  .priority-section { margin-top: 20px; }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-top: none; border-radius: 0 8px 8px 8px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: var(--carbon); color: var(--white);
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .4px; padding: 10px 14px; text-align: left;
+  }
+  tbody td {
+    padding: 11px 14px; font-size: 12px; color: var(--carbon);
+    border-bottom: 1px solid var(--border); vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: #FAFAF8; }
+  tbody tr:hover td { background: var(--bg2); }
+
+  /* ── TOOLBAR ── */
+  .toolbar { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
+  .search {
+    flex: 1; min-width: 180px; height: 34px;
+    display: flex; align-items: center; gap: 7px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0 11px;
+  }
+  .search input { border: none; background: none; font-size: 13px; color: var(--carbon); outline: none; flex: 1; font-family: inherit; }
+  .search input::placeholder { color: #bbb; }
+  .fsel {
+    height: 34px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--white); color: var(--gray); font-size: 12px;
+    padding: 0 10px; font-family: inherit; cursor: pointer; outline: none;
+  }
+
+  /* ── CONTACT TABLE ── */
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; flex-shrink: 0;
+  }
+  .name-cell { display: flex; align-items: center; gap: 8px; }
+  .cname { font-size: 12px; font-weight: 600; }
+  .csub  { font-size: 11px; color: var(--gray); }
+  .row-actions { display: flex; gap: 5px; }
+  .btn-xs {
+    height: 26px; padding: 0 9px; border-radius: 6px; font-size: 11px;
+    cursor: pointer; font-family: inherit; font-weight: 500;
+  }
+
+  /* ── MODAL ── */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(44,44,44,.45); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 12px;
+    border: 1px solid var(--border); width: 480px; max-width: 95vw;
+    padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .modal-title { font-size: 14px; font-weight: 600; }
+  .modal-x { background: none; border: 1px solid var(--border); border-radius: 6px; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray); }
+  .modal-x:hover { background: var(--bg); }
+  .fg { margin-bottom: 12px; }
+  .fl { font-size: 11px; font-weight: 600; color: var(--gray); display: block; margin-bottom: 4px; }
+  .fc {
+    width: 100%; height: 34px; border: 1px solid var(--border);
+    border-radius: 8px; padding: 0 11px; font-size: 12px;
+    color: var(--carbon); background: var(--white); font-family: inherit; outline: none;
+  }
+  .fc:focus { border-color: var(--salvia); }
+  .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-foot { display: flex; gap: 7px; justify-content: flex-end; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
+
+  /* ── DETAIL PANEL ── */
+  .det-overlay { display: none; position: fixed; inset: 0; background: rgba(44,44,44,.3); z-index: 150; }
+  .det-overlay.open { display: block; }
+  .det-panel {
+    position: fixed; top: 0; right: -400px; bottom: 0; width: 380px;
+    background: var(--white); border-left: 1px solid var(--border);
+    z-index: 151; overflow-y: auto;
+    transition: right .25s cubic-bezier(.4,0,.2,1);
+  }
+  .det-panel.open { right: 0; }
+  .det-top {
+    padding: 16px 18px 14px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--white); z-index: 2;
+  }
+  .det-toprow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .det-av { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .det-name { font-size: 15px; font-weight: 600; }
+  .det-meta { font-size: 11px; color: var(--gray); margin-top: 3px; display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+  .det-body { padding: 16px 18px; }
+  .det-sec { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: .4px; margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .det-sec:first-child { margin-top: 0; }
+  .irow { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; }
+  .ikey { color: var(--gray); min-width: 80px; }
+  .ival { color: var(--carbon); font-weight: 500; }
+  .note-box { font-size: 12px; color: var(--gray); background: var(--bg); border-radius: 8px; padding: 10px 12px; line-height: 1.6; }
+  .stage-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .spill {
+    font-size: 11px; border: 1px solid var(--border); border-radius: 20px;
+    padding: 4px 10px; cursor: pointer; background: var(--bg); color: var(--gray);
+    font-family: inherit; transition: background .12s;
+  }
+  .spill:hover { background: var(--white); border-color: var(--salvia); color: var(--salvia); }
+  .spill.cur { background: var(--carbon); color: var(--white); border-color: var(--carbon); }
+  .activity-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .act-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); margin-top: 4px; flex-shrink: 0; }
+  .act-t { font-size: 12px; color: var(--carbon); }
+  .act-time { font-size: 11px; color: var(--gray); margin-top: 1px; }
+  .note-inp-row { display: flex; gap: 6px; margin-top: 10px; }
+  .note-inp { flex: 1; height: 32px; border: 1px solid var(--border); border-radius: 8px; padding: 0 10px; font-size: 12px; color: var(--carbon); background: var(--white); font-family: inherit; outline: none; }
+  .note-inp:focus { border-color: var(--salvia); }
+  .det-del { margin-top: 24px; padding-top: 16px; border-bottom: none; border-top: 1px solid var(--border); }
+
+  /* ── CONFIRM MODAL ── */
+  .modal-sm { width: 380px; }
+  .modal-body-text { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 18px; }
+  .modal-body-text strong { color: var(--carbon); }
+
+  /* ── EMPTY ── */
+  .empty { text-align: center; padding: 40px 20px; color: var(--gray); font-size: 13px; }
+
+  svg { display: inline-block; vertical-align: middle; }
+
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .fg2 { grid-template-columns: 1fr; }
+    .det-panel { width: 100%; right: -100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">BLÜM GROUP <span>CRM · Inmobiliario</span></div>
+  <div class="topbar-right">
+    <button class="btn btn-outline" onclick="openModal('lead')">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Nuevo lead
+    </button>
+    <button class="btn btn-dark" onclick="openModal('cliente')">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Nuevo cliente
+    </button>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<nav class="nav">
+  <button class="tab active" id="tab-dashboard" onclick="switchTab('dashboard',this)">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="13" width="4" height="8"/><rect x="10" y="9" width="4" height="12"/><rect x="17" y="5" width="4" height="16"/></svg>
+    Dashboard
+  </button>
+  <button class="tab" id="tab-leads" onclick="switchTab('leads',this)">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+    Leads <span class="tab-count" id="tc-leads">0</span>
+  </button>
+  <button class="tab" id="tab-clientes" onclick="switchTab('clientes',this)">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>
+    Clientes <span class="tab-count" id="tc-clientes">0</span>
+  </button>
+</nav>
+
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div id="view-dashboard" class="view active">
+    <div class="metrics-section">
+      <div class="section-label">Inmuebles</div>
+      <div class="metrics-grid" id="m-inmuebles"></div>
+    </div>
+    <div class="metrics-section">
+      <div class="section-label terra">Leads</div>
+      <div class="metrics-grid" id="m-leads"></div>
+    </div>
+    <div class="metrics-section">
+      <div class="section-label carbon">Clientes</div>
+      <div class="metrics-grid" id="m-clientes"></div>
+    </div>
+    <div class="priority-section">
+      <div class="section-label red">Pendientes — Acción inmediata</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Nombre</th><th>Inmueble</th><th>Estado</th><th>Pendiente</th><th>Prioridad</th>
+          </tr></thead>
+          <tbody id="priority-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADS -->
+  <div id="view-leads" class="view">
+    <div class="toolbar">
+      <div class="search">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Buscar nombre, inmueble, teléfono…" id="search-leads" oninput="renderLeads()">
+      </div>
+      <select class="fsel" id="filter-leads-etapa" onchange="renderLeads()">
+        <option value="">Todas las etapas</option>
+        <option>Nuevo</option><option>Contactado</option>
+        <option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option>
+      </select>
+      <select class="fsel" id="filter-leads-prio" onchange="renderLeads()">
+        <option value="">Toda prioridad</option>
+        <option>Alta</option><option>Media</option><option>Baja</option>
+      </select>
+    </div>
+    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
+      <table>
+        <thead><tr>
+          <th>Nombre</th><th>Teléfono</th><th>Inmueble de interés</th>
+          <th>Etapa</th><th>Estado inmueble</th><th>Línea</th><th>Prioridad</th><th></th>
+        </tr></thead>
+        <tbody id="leads-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="view-clientes" class="view">
+    <div class="toolbar">
+      <div class="search">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Buscar nombre, inmueble, teléfono…" id="search-clientes" oninput="renderClientes()">
+      </div>
+      <select class="fsel" id="filter-cli-etapa" onchange="renderClientes()">
+        <option value="">Todas las etapas</option>
+        <option>Visita agendada</option><option>Propuesta enviada</option>
+        <option>En negociación</option><option>Cerrado</option>
+      </select>
+      <select class="fsel" id="filter-cli-prio" onchange="renderClientes()">
+        <option value="">Toda prioridad</option>
+        <option>Alta</option><option>Media</option><option>Baja</option>
+      </select>
+    </div>
+    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
+      <table>
+        <thead><tr>
+          <th>Nombre</th><th>Teléfono</th><th>Inmueble</th>
+          <th>Etapa</th><th>Estado</th><th>Contrato</th><th>Prioridad</th><th>Pendiente</th><th></th>
+        </tr></thead>
+        <tbody id="clientes-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- DETAIL PANEL -->
+<div class="det-overlay" id="det-overlay" onclick="closeDetail()"></div>
+<div class="det-panel" id="det-panel">
+  <div class="det-top">
+    <div class="det-toprow">
+      <span style="font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;">Ficha</span>
+      <button class="modal-x" onclick="closeDetail()">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="det-top-content"></div>
+  </div>
+  <div class="det-body" id="det-body"></div>
+</div>
+
+<!-- NEW CONTACT MODAL -->
+<div class="modal-bg" id="contact-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="modal-title-text">Nuevo contacto</span>
+      <button class="modal-x" onclick="closeContactModal()">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="fg2">
+      <div class="fg"><label class="fl">Nombre / Empresa *</label><input class="fc" id="f-nombre" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Teléfono / WA</label><input class="fc" id="f-tel" placeholder="+57 300 000 0000"></div>
+      <div class="fg"><label class="fl">Inmueble de interés</label><input class="fc" id="f-inmueble" placeholder="Ej: Apto Betania 302"></div>
+      <div class="fg"><label class="fl">Línea</label>
+        <select class="fc" id="f-linea">
+          <option>Administración</option><option>Rentas cortas</option>
+          <option>Ventas</option><option>Proyectos</option>
+        </select>
+      </div>
+      <div class="fg" id="fg-etapa"><label class="fl">Etapa</label>
+        <select class="fc" id="f-etapa">
+          <option>Nuevo</option><option>Contactado</option>
+          <option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option>
+        </select>
+      </div>
+      <div class="fg" id="fg-estado-inm"><label class="fl">Estado inmueble</label>
+        <select class="fc" id="f-estado-inm">
+          <option>Disponible</option><option>En negociación</option><option>Publicado</option>
+          <option>Ocupado</option><option>En venta</option><option>Administrando</option>
+        </select>
+      </div>
+      <div class="fg" id="fg-contrato" style="display:none"><label class="fl">Contrato</label>
+        <select class="fc" id="f-contrato">
+          <option>Pendiente</option><option>Pendiente firma</option><option>Firmado</option><option>Renovar</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Prioridad</label>
+        <select class="fc" id="f-prio">
+          <option>Alta</option><option selected>Media</option><option>Baja</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Pendiente / Notas</label>
+      <input class="fc" id="f-nota" placeholder="Ej: Pendiente firma acuerdo">
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeContactModal()">Cancelar</button>
+      <button class="btn btn-dark" id="modal-save-btn" onclick="saveContact()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="modal-bg" id="confirm-modal">
+  <div class="modal modal-sm">
+    <div class="modal-hdr">
+      <span class="modal-title">Eliminar contacto</span>
+      <button class="modal-x" onclick="closeConfirm()">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p class="modal-body-text">¿Eliminar a <strong id="confirm-name"></strong>? Esta acción no se puede deshacer.</p>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn btn-red" onclick="doDelete()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATOS INICIALES ──────────────────────────────
+const AVATAR_COLORS=[
+  {bg:'#E8EFFC',c:'#1A4FA0'},{bg:'#E8F5EE',c:'#1A6B45'},
+  {bg:'#FEF3DB',c:'#8A5A00'},{bg:'#F0EBFC',c:'#5A3A9A'},
+  {bg:'#F5EDE4',c:'#B08968'},{bg:'#E8F0E8',c:'#6B8E6B'}
+];
+function avColor(n){let h=0;for(let c of n)h=(h*31+c.charCodeAt(0))&0xff;return AVATAR_COLORS[h%AVATAR_COLORS.length];}
+function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?';}
+function hoy(){return new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}
+
+const ETAPA_LEADS = ['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación'];
+const ETAPA_CLI   = ['Visita agendada','Propuesta enviada','En negociación','Cerrado'];
+
+let leads = [
+  {id:1,nombre:'Eugenio',tel:'',inmueble:'Urb. Santuario',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Pendiente hacer propuesta',activity:[{t:'Lead creado',d:'Jun 2025'}]},
+  {id:2,nombre:'Casa Group',tel:'',inmueble:'Apto Local Boston',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Por visitar',activity:[{t:'Lead creado',d:'Jun 2025'}]},
+  {id:3,nombre:'Casa Group',tel:'',inmueble:'Local Boston',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Por visitar',activity:[{t:'Lead creado',d:'Jun 2025'}]},
+];
+let clientes = [
+  {id:10,nombre:'Orly',tel:'',inmueble:'Gran Plaza 85 — Apto',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente firma',prioridad:'Alta',nota:'Confirmar renta corta + firma acuerdo',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
+  {id:11,nombre:'Margarita Amaya',tel:'',inmueble:'Cabaña',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente',prioridad:'Alta',nota:'Pendiente por cerrar',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
+  {id:12,nombre:'Margarita Amaya',tel:'',inmueble:'Apto Mallorquín',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente',prioridad:'Alta',nota:'Pendiente por cerrar',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
+  {id:13,nombre:'Casa Group',tel:'',inmueble:'Apto Betania Edif.',etapa:'En negociación',estadoInm:'En venta',contrato:'Pendiente',prioridad:'Alta',nota:'Visitar — publicado para venta',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
+  {id:14,nombre:'Valerie',tel:'',inmueble:'Central Park 501',etapa:'Cerrado',estadoInm:'Publicado',contrato:'Firmado',prioridad:'Media',nota:'Seguimiento publicación renta tradicional',activity:[{t:'Contrato firmado',d:'Jun 2025'},{t:'Cliente creado',d:'May 2025'}]},
+];
+let nextId = 20;
+
+// ── BADGES ───────────────────────────────────────
+const BADGE = {
+  etapa: {
+    'Nuevo':'b-gray','Contactado':'b-gray',
+    'Visita agendada':'b-salvia','Propuesta enviada':'b-terra',
+    'En negociación':'b-amber','Cerrado':'b-salvia',
+  },
+  estadoInm: {
+    'Administrando':'b-salvia','Disponible':'b-salvia','Publicado':'b-salvia-m',
+    'Ocupado':'b-terra','En negociación':'b-amber','En venta':'b-terra','Mantenimiento':'b-red',
+  },
+  prioridad: { 'Alta':'b-red','Media':'b-amber','Baja':'b-salvia' },
+  contrato:  { 'Firmado':'b-salvia','Pendiente firma':'b-amber','Pendiente':'b-amber','Renovar':'b-terra' },
+  linea:     { 'Administración':'b-salvia','Rentas cortas':'b-salvia-m','Ventas':'b-terra','Proyectos':'b-gray' },
+};
+function bdg(val,type){const cl=BADGE[type]?.[val]||'b-gray';return `<span class="badge ${cl}">${val||'—'}</span>`;}
+
+// ── TABS ─────────────────────────────────────────
+function switchTab(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  btn.classList.add('active');
+  closeDetail();
+  if(id==='dashboard')renderDashboard();
+  if(id==='leads')renderLeads();
+  if(id==='clientes')renderClientes();
+}
+function updateCounts(){
+  document.getElementById('tc-leads').textContent=leads.length;
+  document.getElementById('tc-clientes').textContent=clientes.length;
+}
+
+// ── DASHBOARD ─────────────────────────────────────
+function renderDashboard(){
+  const totalInm = leads.length + clientes.length;
+  const dispInm  = [...leads,...clientes].filter(x=>x.estadoInm==='Disponible').length;
+  const negInm   = [...leads,...clientes].filter(x=>x.estadoInm==='En negociación').length;
+  const admInm   = [...leads,...clientes].filter(x=>x.estadoInm==='Administrando').length;
+  document.getElementById('m-inmuebles').innerHTML=`
+    <div class="metric"><div class="metric-label">Total en gestión</div><div class="metric-val">${totalInm}</div></div>
+    <div class="metric salvia"><div class="metric-label">Administrando</div><div class="metric-val">${admInm}</div></div>
+    <div class="metric salvia"><div class="metric-label">Disponibles</div><div class="metric-val">${dispInm}</div></div>
+    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${negInm}</div></div>`;
+
+  const leadsAlta = leads.filter(l=>l.prioridad==='Alta').length;
+  const leadsNuevo= leads.filter(l=>l.etapa==='Nuevo').length;
+  document.getElementById('m-leads').innerHTML=`
+    <div class="metric"><div class="metric-label">Total leads</div><div class="metric-val">${leads.length}</div></div>
+    <div class="metric"><div class="metric-label">Nuevos</div><div class="metric-val">${leadsNuevo}</div></div>
+    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${leadsAlta}</div></div>
+    <div class="metric terra"><div class="metric-label">Líneas activas</div><div class="metric-val">${new Set(leads.map(l=>l.linea)).size}</div></div>`;
+
+  const cliNeg    = clientes.filter(c=>c.etapa==='En negociación').length;
+  const cliCerrado= clientes.filter(c=>c.etapa==='Cerrado').length;
+  const cliAlta   = clientes.filter(c=>c.prioridad==='Alta').length;
+  document.getElementById('m-clientes').innerHTML=`
+    <div class="metric"><div class="metric-label">Total clientes</div><div class="metric-val">${clientes.length}</div></div>
+    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${cliNeg}</div></div>
+    <div class="metric salvia"><div class="metric-label">Cerrados</div><div class="metric-val">${cliCerrado}</div></div>
+    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${cliAlta}</div></div>`;
+
+  const priority = [...leads,...clientes].filter(x=>x.prioridad==='Alta'||x.prioridad==='Media').sort((a,b)=>(a.prioridad==='Alta'?0:1)-(b.prioridad==='Alta'?0:1));
+  const tbody = document.getElementById('priority-tbody');
+  if(!priority.length){tbody.innerHTML='<tr><td colspan="5" class="empty">Sin pendientes urgentes</td></tr>';return;}
+  tbody.innerHTML=priority.map(x=>`
+    <tr>
+      <td><div class="name-cell"><div class="avatar" style="background:${avColor(x.nombre).bg};color:${avColor(x.nombre).c}">${ini(x.nombre)}</div><div><div class="cname">${x.nombre}</div></div></div></td>
+      <td style="color:var(--gray);font-size:12px;">${x.inmueble||'—'}</td>
+      <td>${bdg(x.estadoInm,'estadoInm')}</td>
+      <td style="font-size:12px;color:var(--gray);">${x.nota||'—'}</td>
+      <td>${bdg(x.prioridad,'prioridad')}</td>
+    </tr>`).join('');
+}
+
+// ── LEADS TABLE ───────────────────────────────────
+function renderLeads(){
+  const q=(document.getElementById('search-leads').value||'').toLowerCase();
+  const ef=document.getElementById('filter-leads-etapa').value;
+  const pf=document.getElementById('filter-leads-prio').value;
+  const list=leads.filter(l=>{
+    const m=l.nombre.toLowerCase().includes(q)||(l.inmueble||'').toLowerCase().includes(q)||(l.tel||'').includes(q);
+    return m&&(!ef||l.etapa===ef)&&(!pf||l.prioridad===pf);
+  });
+  const tbody=document.getElementById('leads-tbody');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="8" class="empty">Sin leads</td></tr>';return;}
+  tbody.innerHTML=list.map(l=>{
+    const av=avColor(l.nombre);
+    return `<tr>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(l.nombre)}</div><div><div class="cname">${l.nombre}</div><div class="csub">${l.tel||'—'}</div></div></div></td>
+      <td style="font-size:12px;color:var(--gray);">${l.tel||'—'}</td>
+      <td style="font-size:12px;">${l.inmueble||'—'}</td>
+      <td>${bdg(l.etapa,'etapa')}</td>
+      <td>${bdg(l.estadoInm,'estadoInm')}</td>
+      <td>${bdg(l.linea,'linea')}</td>
+      <td>${bdg(l.prioridad,'prioridad')}</td>
+      <td><div class="row-actions">
+        <button class="btn btn-outline btn-xs" onclick="openDetail(${l.id},'lead')">Ver</button>
+        <button class="btn btn-red btn-xs" onclick="askDelete(${l.id},'lead')">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── CLIENTES TABLE ────────────────────────────────
+function renderClientes(){
+  const q=(document.getElementById('search-clientes').value||'').toLowerCase();
+  const ef=document.getElementById('filter-cli-etapa').value;
+  const pf=document.getElementById('filter-cli-prio').value;
+  const list=clientes.filter(c=>{
+    const m=c.nombre.toLowerCase().includes(q)||(c.inmueble||'').toLowerCase().includes(q)||(c.tel||'').includes(q);
+    return m&&(!ef||c.etapa===ef)&&(!pf||c.prioridad===pf);
+  });
+  const tbody=document.getElementById('clientes-tbody');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin clientes</td></tr>';return;}
+  tbody.innerHTML=list.map(c=>{
+    const av=avColor(c.nombre);
+    return `<tr>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(c.nombre)}</div><div><div class="cname">${c.nombre}</div><div class="csub">${c.tel||'—'}</div></div></div></td>
+      <td style="font-size:12px;color:var(--gray);">${c.tel||'—'}</td>
+      <td style="font-size:12px;">${c.inmueble||'—'}</td>
+      <td>${bdg(c.etapa,'etapa')}</td>
+      <td>${bdg(c.estadoInm,'estadoInm')}</td>
+      <td>${bdg(c.contrato,'contrato')}</td>
+      <td>${bdg(c.prioridad,'prioridad')}</td>
+      <td style="font-size:11px;color:var(--gray);max-width:160px;">${c.nota||'—'}</td>
+      <td><div class="row-actions">
+        <button class="btn btn-outline btn-xs" onclick="openDetail(${c.id},'cliente')">Ver</button>
+        <button class="btn btn-red btn-xs" onclick="askDelete(${c.id},'cliente')">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── DETAIL PANEL ──────────────────────────────────
+let detType=null, detId=null;
+function openDetail(id,type){
+  detId=id; detType=type;
+  const rec=(type==='lead'?leads:clientes).find(x=>x.id===id);
+  if(!rec)return;
+  const av=avColor(rec.nombre);
+  document.getElementById('det-top-content').innerHTML=`
+    <div class="det-av" style="background:${av.bg};color:${av.c}">${ini(rec.nombre)}</div>
+    <div class="det-name">${rec.nombre}</div>
+    <div class="det-meta">
+      ${bdg(type==='lead'?rec.etapa:rec.etapa,'etapa')}
+      ${bdg(rec.prioridad,'prioridad')}
+    </div>`;
+  const etapas=type==='lead'?ETAPA_LEADS:ETAPA_CLI;
+  document.getElementById('det-body').innerHTML=`
+    <div class="det-sec">Datos</div>
+    <div class="irow"><span class="ikey">Teléfono</span><span class="ival">${rec.tel||'—'}</span></div>
+    <div class="irow"><span class="ikey">Inmueble</span><span class="ival">${rec.inmueble||'—'}</span></div>
+    <div class="irow"><span class="ikey">Estado inm.</span><span class="ival">${bdg(rec.estadoInm,'estadoInm')}</span></div>
+    ${type==='lead'?`<div class="irow"><span class="ikey">Línea</span><span class="ival">${bdg(rec.linea,'linea')}</span></div>`:''}
+    ${type==='cliente'?`<div class="irow"><span class="ikey">Contrato</span><span class="ival">${bdg(rec.contrato,'contrato')}</span></div>`:''}
+    <div class="det-sec">Pendiente</div>
+    <div class="note-box">${rec.nota||'Sin nota.'}</div>
+    <div class="det-sec">Cambiar etapa</div>
+    <div class="stage-pills">${etapas.map(e=>`<button class="spill${rec.etapa===e?' cur':''}" onclick="changeEtapa(${id},'${type}','${e}')">${e}</button>`).join('')}</div>
+    <div class="det-sec">Actividad</div>
+    ${(rec.activity||[]).map(a=>`<div class="activity-item"><div class="act-dot"></div><div><div class="act-t">${a.t}</div><div class="act-time">${a.d}</div></div></div>`).join('')}
+    <div class="note-inp-row">
+      <input class="note-inp" type="text" placeholder="Agregar nota…" id="note-inp-${id}">
+      <button class="btn btn-dark" style="height:32px;padding:0 10px;font-size:11px;" onclick="addNote(${id},'${type}')">+ Nota</button>
+    </div>
+    <div class="det-del">
+      <button class="btn btn-red" style="width:100%;justify-content:center;" onclick="askDelete(${id},'${type}')">Eliminar contacto</button>
+    </div>`;
+  document.getElementById('det-overlay').classList.add('open');
+  document.getElementById('det-panel').classList.add('open');
+}
+function closeDetail(){
+  document.getElementById('det-overlay').classList.remove('open');
+  document.getElementById('det-panel').classList.remove('open');
+  detId=null; detType=null;
+}
+function changeEtapa(id,type,etapa){
+  const arr=type==='lead'?leads:clientes;
+  const rec=arr.find(x=>x.id===id);
+  rec.etapa=etapa;
+  rec.activity.unshift({t:`Etapa → ${etapa}`,d:hoy()});
+  openDetail(id,type);
+  renderLeads(); renderClientes(); renderDashboard();
+}
+function addNote(id,type){
+  const inp=document.getElementById('note-inp-'+id);
+  const val=inp.value.trim(); if(!val)return;
+  const arr=type==='lead'?leads:clientes;
+  arr.find(x=>x.id===id).activity.unshift({t:val,d:hoy()});
+  inp.value='';
+  openDetail(id,type);
+}
+
+// ── MODAL CONTACTO ────────────────────────────────
+let modalType='lead';
+function openModal(type){
+  modalType=type;
+  document.getElementById('modal-title-text').textContent=type==='lead'?'Nuevo lead':'Nuevo cliente';
+  document.getElementById('modal-save-btn').textContent='Guardar';
+  const etapaSel=document.getElementById('f-etapa');
+  etapaSel.innerHTML=(type==='lead'?ETAPA_LEADS:ETAPA_CLI).map(e=>`<option>${e}</option>`).join('');
+  document.getElementById('fg-contrato').style.display=type==='cliente'?'block':'none';
+  document.getElementById('contact-modal').classList.add('open');
+}
+function closeContactModal(){
+  document.getElementById('contact-modal').classList.remove('open');
+  ['f-nombre','f-tel','f-inmueble','f-nota'].forEach(id=>document.getElementById(id).value='');
+}
+function saveContact(){
+  const nombre=document.getElementById('f-nombre').value.trim();
+  if(!nombre){alert('El nombre es obligatorio.');return;}
+  const rec={
+    id:nextId++, nombre,
+    tel:document.getElementById('f-tel').value.trim(),
+    inmueble:document.getElementById('f-inmueble').value.trim(),
+    etapa:document.getElementById('f-etapa').value,
+    estadoInm:document.getElementById('f-estado-inm').value,
+    linea:document.getElementById('f-linea').value,
+    prioridad:document.getElementById('f-prio').value,
+    nota:document.getElementById('f-nota').value.trim(),
+    activity:[{t:'Contacto creado',d:hoy()}]
+  };
+  if(modalType==='cliente') rec.contrato=document.getElementById('f-contrato').value;
+  if(modalType==='lead') leads.push(rec);
+  else clientes.push(rec);
+  closeContactModal();
+  updateCounts();
+  renderDashboard(); renderLeads(); renderClientes();
+  switchTab(modalType==='lead'?'leads':'clientes', document.getElementById('tab-'+(modalType==='lead'?'leads':'clientes')));
+}
+
+// ── DELETE ────────────────────────────────────────
+let pendingDelId=null, pendingDelType=null;
+function askDelete(id,type){
+  pendingDelId=id; pendingDelType=type;
+  const arr=type==='lead'?leads:clientes;
+  const rec=arr.find(x=>x.id===id);
+  document.getElementById('confirm-name').textContent=rec?rec.nombre:'este contacto';
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirm(){pendingDelId=null;pendingDelType=null;document.getElementById('confirm-modal').classList.remove('open');}
+function doDelete(){
+  if(pendingDelType==='lead') leads=leads.filter(x=>x.id!==pendingDelId);
+  else clientes=clientes.filter(x=>x.id!==pendingDelId);
+  closeConfirm(); closeDetail();
+  updateCounts(); renderDashboard(); renderLeads(); renderClientes();
+}
+
+// Click outside modals
+document.getElementById('contact-modal').addEventListener('click',function(e){if(e.target===this)closeContactModal();});
+document.getElementById('confirm-modal').addEventListener('click',function(e){if(e.target===this)closeConfirm();});
+
+// ── INIT ─────────────────────────────────────────
+updateCounts();
+renderDashboard();
+</script>
+</body>
+</html>
