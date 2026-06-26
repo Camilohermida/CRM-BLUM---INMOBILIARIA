@@ -5,283 +5,145 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BLÜM GROUP · CRM</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --carbon:#2C2C2C;--salvia:#6B8E6B;--salvia-l:#E8F0E8;--salvia-m:#8FA68F;
+  --terra:#B08968;--terra-l:#F5EDE4;--white:#FFFFFF;--bg:#F7F6F3;--bg2:#F0EEE9;
+  --border:#E2DDD6;--gray:#888888;--red:#C0392B;--red-l:#FCECEA;
+  --amber:#8A5A00;--amber-l:#FEF3DB;
+}
+html,body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--carbon);font-size:14px;min-height:100vh;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* TOPBAR */
+.topbar{background:var(--carbon);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{color:var(--white);font-size:15px;font-weight:500;}
+.logo span{color:var(--salvia-m);font-weight:300;margin-left:6px;font-size:13px;}
+.topbar-right{display:flex;gap:8px;}
+.stripe{height:3px;background:var(--salvia);}
 
-  :root {
-    --carbon:   #2C2C2C;
-    --salvia:   #6B8E6B;
-    --salvia-l: #E8F0E8;
-    --salvia-m: #8FA68F;
-    --terra:    #B08968;
-    --terra-l:  #F5EDE4;
-    --white:    #FFFFFF;
-    --bg:       #F7F6F3;
-    --bg2:      #F0EEE9;
-    --border:   #E2DDD6;
-    --gray:     #888888;
-    --red:      #C0392B;
-    --red-l:    #FCECEA;
-    --amber:    #8A5A00;
-    --amber-l:  #FEF3DB;
-  }
+/* NAV */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;overflow-x:auto;}
+.tab{padding:13px 16px 12px;font-size:13px;font-weight:500;color:var(--gray);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:color .15s;}
+.tab:hover{color:var(--carbon);}
+.tab.active{color:var(--carbon);border-bottom-color:var(--carbon);}
+.tab-count{font-size:10px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1px 6px;color:var(--gray);font-weight:400;}
 
-  html, body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--carbon);
-    font-size: 14px;
-    min-height: 100vh;
-  }
+/* MAIN */
+.main{padding:20px 24px 40px;}
+.view{display:none;}
+.view.active{display:block;}
 
-  /* ── TOPBAR ── */
-  .topbar {
-    background: var(--carbon);
-    padding: 0 24px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo { color: var(--white); font-size: 15px; font-weight: 500; letter-spacing: -.2px; }
-  .logo span { color: var(--salvia-m); font-weight: 300; margin-left: 6px; font-size: 13px; }
-  .topbar-right { display: flex; gap: 8px; align-items: center; }
+/* BUTTONS */
+.btn{height:32px;padding:0 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s;}
+.btn-dark{background:var(--carbon);color:var(--white);border:none;}
+.btn-dark:hover{opacity:.85;}
+.btn-outline{background:var(--white);color:var(--gray);border:1px solid var(--border);}
+.btn-outline:hover{background:var(--bg);color:var(--carbon);}
+.btn-red{background:var(--red-l);color:var(--red);border:1px solid #f5c0bb;}
+.btn-red:hover{background:#f7d0cc;}
+.btn-xs{height:26px;padding:0 9px;border-radius:6px;font-size:11px;}
 
-  /* ── STRIPE ── */
-  .stripe { height: 3px; background: var(--salvia); }
+/* BADGES */
+.badge{display:inline-block;font-size:10px;font-weight:600;border-radius:20px;padding:2px 9px;white-space:nowrap;}
+.b-salvia{background:var(--salvia-l);color:var(--salvia);}
+.b-terra{background:var(--terra-l);color:var(--terra);}
+.b-amber{background:var(--amber-l);color:var(--amber);}
+.b-red{background:var(--red-l);color:var(--red);}
+.b-gray{background:var(--bg2);color:var(--gray);}
+.b-salvia-m{background:var(--salvia-l);color:var(--salvia-m);}
 
-  /* ── NAV TABS ── */
-  .nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 2px; }
-  .tab {
-    padding: 13px 16px 12px;
-    font-size: 13px; font-weight: 500;
-    color: var(--gray);
-    background: none; border: none;
-    border-bottom: 2px solid transparent;
-    cursor: pointer; font-family: inherit;
-    display: flex; align-items: center; gap: 6px;
-    transition: color .15s;
-  }
-  .tab:hover { color: var(--carbon); }
-  .tab.active { color: var(--carbon); border-bottom-color: var(--carbon); }
-  .tab-count {
-    font-size: 10px; background: var(--bg2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 1px 6px; color: var(--gray); font-weight: 400;
-  }
+/* DASHBOARD */
+.section-label{font-size:10px;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.5px;background:var(--salvia);padding:7px 14px;border-radius:8px 8px 0 0;display:inline-block;}
+.section-label.terra{background:var(--terra);}
+.section-label.carbon{background:var(--carbon);}
+.section-label.red{background:var(--red);}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:none;border-radius:0 8px 8px 8px;overflow:hidden;margin-bottom:20px;}
+.metric{background:var(--white);padding:14px 16px;}
+.metric-label{font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+.metric-val{font-size:32px;font-weight:600;color:var(--carbon);line-height:1;}
+.metric.salvia .metric-val{color:var(--salvia);}
+.metric.terra .metric-val{color:var(--terra);}
+.metric.amber .metric-val{color:var(--amber);}
+.metric.red .metric-val{color:var(--red);}
 
-  /* ── MAIN ── */
-  .main { padding: 20px 24px 40px; }
-  .view { display: none; }
-  .view.active { display: block; }
+/* TABLES */
+.toolbar{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
+.search{flex:1;min-width:180px;height:34px;display:flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:0 11px;}
+.search input{border:none;background:none;font-size:13px;color:var(--carbon);outline:none;flex:1;font-family:inherit;}
+.search input::placeholder{color:#bbb;}
+.fsel{height:34px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--gray);font-size:12px;padding:0 10px;font-family:inherit;cursor:pointer;outline:none;}
+.table-wrap{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:700px;}
+thead th{background:var(--carbon);color:var(--white);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding:10px 12px;text-align:left;white-space:nowrap;}
+tbody td{padding:10px 12px;font-size:12px;color:var(--carbon);border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even) td{background:#FAFAF8;}
+tbody tr:hover td{background:var(--bg2);}
+.name-cell{display:flex;align-items:center;gap:8px;}
+.avatar{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.cname{font-size:12px;font-weight:600;}
+.row-actions{display:flex;gap:5px;}
+.empty{text-align:center;padding:32px 20px;color:var(--gray);font-size:13px;}
 
-  /* ── BUTTONS ── */
-  .btn {
-    height: 32px; padding: 0 14px; border-radius: 8px; font-size: 12px;
-    font-weight: 500; cursor: pointer; font-family: inherit;
-    display: inline-flex; align-items: center; gap: 5px; transition: opacity .15s;
-  }
-  .btn-dark { background: var(--carbon); color: var(--white); border: none; }
-  .btn-dark:hover { opacity: .85; }
-  .btn-outline { background: var(--white); color: var(--gray); border: 1px solid var(--border); }
-  .btn-outline:hover { background: var(--bg); color: var(--carbon); }
-  .btn-red { background: var(--red-l); color: var(--red); border: 1px solid #f5c0bb; }
-  .btn-red:hover { background: #f7d0cc; }
+/* INLINE EDITING */
+.inline-inp{width:100%;min-width:80px;border:none;background:transparent;font-size:12px;color:var(--carbon);font-family:inherit;padding:2px 4px;border-radius:4px;outline:none;cursor:text;}
+.inline-inp:hover{background:var(--bg2);}
+.inline-inp:focus{background:var(--white);border:1px solid var(--salvia);box-shadow:0 0 0 2px rgba(107,142,107,.15);}
+.inline-sel{width:100%;min-width:90px;border:none;background:transparent;font-size:11px;font-weight:600;color:var(--carbon);font-family:inherit;padding:2px 4px;border-radius:4px;outline:none;cursor:pointer;}
+.inline-sel:hover{background:var(--bg2);}
+.inline-sel:focus{background:var(--white);border:1px solid var(--salvia);}
 
-  /* ── BADGES ── */
-  .badge {
-    display: inline-block; font-size: 10px; font-weight: 600;
-    border-radius: 20px; padding: 2px 9px; white-space: nowrap;
-  }
-  .b-salvia   { background: var(--salvia-l); color: var(--salvia); }
-  .b-terra    { background: var(--terra-l);  color: var(--terra); }
-  .b-amber    { background: var(--amber-l);  color: var(--amber); }
-  .b-red      { background: var(--red-l);    color: var(--red); }
-  .b-gray     { background: var(--bg2);      color: var(--gray); }
-  .b-salvia-m { background: var(--salvia-l); color: var(--salvia-m); }
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(44,44,44,.45);z-index:200;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--white);border-radius:12px;border:1px solid var(--border);width:480px;max-width:95vw;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:90vh;overflow-y:auto;}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-title{font-size:14px;font-weight:600;}
+.modal-x{background:none;border:1px solid var(--border);border-radius:6px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray);}
+.modal-x:hover{background:var(--bg);}
+.fg{margin-bottom:12px;}
+.fl{font-size:11px;font-weight:600;color:var(--gray);display:block;margin-bottom:4px;}
+.fc{width:100%;height:34px;border:1px solid var(--border);border-radius:8px;padding:0 11px;font-size:12px;color:var(--carbon);background:var(--white);font-family:inherit;outline:none;}
+.fc:focus{border-color:var(--salvia);}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-foot{display:flex;gap:7px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);}
 
-  /* ── DASHBOARD METRICS ── */
-  .metrics-section { margin-bottom: 20px; }
-  .section-label {
-    font-size: 10px; font-weight: 600; color: var(--white);
-    text-transform: uppercase; letter-spacing: .5px;
-    background: var(--salvia); padding: 7px 14px;
-    border-radius: 8px 8px 0 0; display: inline-block;
-  }
-  .section-label.terra { background: var(--terra); }
-  .section-label.carbon { background: var(--carbon); }
-  .section-label.red { background: var(--red); }
-  .metrics-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-    background: var(--border); border: 1px solid var(--border);
-    border-top: none; border-radius: 0 8px 8px 8px; overflow: hidden;
-  }
-  .metric {
-    background: var(--white); padding: 14px 16px;
-    display: flex; flex-direction: column;
-  }
-  .metric-label { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
-  .metric-val   { font-size: 32px; font-weight: 600; color: var(--carbon); line-height: 1; }
-  .metric.salvia .metric-val { color: var(--salvia); }
-  .metric.terra  .metric-val { color: var(--terra); }
-  .metric.amber  .metric-val { color: var(--amber); }
-  .metric.red    .metric-val { color: var(--red); }
+/* DETAIL PANEL */
+.det-overlay{display:none;position:fixed;inset:0;background:rgba(44,44,44,.3);z-index:150;}
+.det-overlay.open{display:block;}
+.det-panel{position:fixed;top:0;right:-400px;bottom:0;width:380px;background:var(--white);border-left:1px solid var(--border);z-index:151;overflow-y:auto;transition:right .25s cubic-bezier(.4,0,.2,1);}
+.det-panel.open{right:0;}
+.det-top{padding:16px 18px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:2;}
+.det-toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.det-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;margin-bottom:8px;}
+.det-name{font-size:15px;font-weight:600;}
+.det-meta{font-size:11px;color:var(--gray);margin-top:3px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.det-body{padding:16px 18px;}
+.det-sec{font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.det-sec:first-child{margin-top:0;}
+.irow{display:flex;gap:8px;margin-bottom:8px;font-size:12px;}
+.ikey{color:var(--gray);min-width:80px;}
+.ival{color:var(--carbon);font-weight:500;}
+.note-box{font-size:12px;color:var(--gray);background:var(--bg);border-radius:8px;padding:10px 12px;line-height:1.6;}
+.stage-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.spill{font-size:11px;border:1px solid var(--border);border-radius:20px;padding:4px 10px;cursor:pointer;background:var(--bg);color:var(--gray);font-family:inherit;}
+.spill:hover{background:var(--white);border-color:var(--salvia);color:var(--salvia);}
+.spill.cur{background:var(--carbon);color:var(--white);border-color:var(--carbon);}
+.activity-item{display:flex;gap:8px;margin-bottom:10px;}
+.act-dot{width:6px;height:6px;border-radius:50%;background:var(--border);margin-top:4px;flex-shrink:0;}
+.act-t{font-size:12px;color:var(--carbon);}
+.act-time{font-size:11px;color:var(--gray);margin-top:1px;}
+.note-inp-row{display:flex;gap:6px;margin-top:10px;}
+.note-inp{flex:1;height:32px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:12px;color:var(--carbon);background:var(--white);font-family:inherit;outline:none;}
+.note-inp:focus{border-color:var(--salvia);}
+.det-del{margin-top:24px;padding-top:16px;border-top:1px solid var(--border);}
 
-  /* ── PRIORITY TABLE ── */
-  .priority-section { margin-top: 20px; }
-  .table-wrap { background: var(--white); border: 1px solid var(--border); border-top: none; border-radius: 0 8px 8px 8px; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  thead th {
-    background: var(--carbon); color: var(--white);
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .4px; padding: 10px 14px; text-align: left;
-  }
-  tbody td {
-    padding: 11px 14px; font-size: 12px; color: var(--carbon);
-    border-bottom: 1px solid var(--border); vertical-align: middle;
-  }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:nth-child(even) td { background: #FAFAF8; }
-  tbody tr:hover td { background: var(--bg2); }
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--carbon);color:var(--white);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
 
-  /* ── TOOLBAR ── */
-  .toolbar { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
-  .search {
-    flex: 1; min-width: 180px; height: 34px;
-    display: flex; align-items: center; gap: 7px;
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 8px; padding: 0 11px;
-  }
-  .search input { border: none; background: none; font-size: 13px; color: var(--carbon); outline: none; flex: 1; font-family: inherit; }
-  .search input::placeholder { color: #bbb; }
-  .fsel {
-    height: 34px; border: 1px solid var(--border); border-radius: 8px;
-    background: var(--white); color: var(--gray); font-size: 12px;
-    padding: 0 10px; font-family: inherit; cursor: pointer; outline: none;
-  }
-
-  /* ── CONTACT TABLE ── */
-  .avatar {
-    width: 28px; height: 28px; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 10px; font-weight: 600; flex-shrink: 0;
-  }
-  .name-cell { display: flex; align-items: center; gap: 8px; }
-  .cname { font-size: 12px; font-weight: 600; }
-  .csub  { font-size: 11px; color: var(--gray); }
-  .row-actions { display: flex; gap: 5px; }
-  .btn-xs {
-    height: 26px; padding: 0 9px; border-radius: 6px; font-size: 11px;
-    cursor: pointer; font-family: inherit; font-weight: 500;
-  }
-
-  /* ── MODAL ── */
-  .modal-bg {
-    display: none; position: fixed; inset: 0;
-    background: rgba(44,44,44,.45); z-index: 200;
-    align-items: center; justify-content: center;
-  }
-  .modal-bg.open { display: flex; }
-  .modal {
-    background: var(--white); border-radius: 12px;
-    border: 1px solid var(--border); width: 480px; max-width: 95vw;
-    padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.12);
-    max-height: 90vh; overflow-y: auto;
-  }
-  .modal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-  .modal-title { font-size: 14px; font-weight: 600; }
-  .modal-x { background: none; border: 1px solid var(--border); border-radius: 6px; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--gray); }
-  .modal-x:hover { background: var(--bg); }
-  .fg { margin-bottom: 12px; }
-  .fl { font-size: 11px; font-weight: 600; color: var(--gray); display: block; margin-bottom: 4px; }
-  .fc {
-    width: 100%; height: 34px; border: 1px solid var(--border);
-    border-radius: 8px; padding: 0 11px; font-size: 12px;
-    color: var(--carbon); background: var(--white); font-family: inherit; outline: none;
-  }
-  .fc:focus { border-color: var(--salvia); }
-  .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .modal-foot { display: flex; gap: 7px; justify-content: flex-end; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); }
-
-  /* ── DETAIL PANEL ── */
-  .det-overlay { display: none; position: fixed; inset: 0; background: rgba(44,44,44,.3); z-index: 150; }
-  .det-overlay.open { display: block; }
-  .det-panel {
-    position: fixed; top: 0; right: -400px; bottom: 0; width: 380px;
-    background: var(--white); border-left: 1px solid var(--border);
-    z-index: 151; overflow-y: auto;
-    transition: right .25s cubic-bezier(.4,0,.2,1);
-  }
-  .det-panel.open { right: 0; }
-  .det-top {
-    padding: 16px 18px 14px; border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: var(--white); z-index: 2;
-  }
-  .det-toprow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .det-av { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-  .det-name { font-size: 15px; font-weight: 600; }
-  .det-meta { font-size: 11px; color: var(--gray); margin-top: 3px; display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
-  .det-body { padding: 16px 18px; }
-  .det-sec { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: .4px; margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-  .det-sec:first-child { margin-top: 0; }
-  .irow { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; }
-  .ikey { color: var(--gray); min-width: 80px; }
-  .ival { color: var(--carbon); font-weight: 500; }
-  .note-box { font-size: 12px; color: var(--gray); background: var(--bg); border-radius: 8px; padding: 10px 12px; line-height: 1.6; }
-  .stage-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-  .spill {
-    font-size: 11px; border: 1px solid var(--border); border-radius: 20px;
-    padding: 4px 10px; cursor: pointer; background: var(--bg); color: var(--gray);
-    font-family: inherit; transition: background .12s;
-  }
-  .spill:hover { background: var(--white); border-color: var(--salvia); color: var(--salvia); }
-  .spill.cur { background: var(--carbon); color: var(--white); border-color: var(--carbon); }
-  .activity-item { display: flex; gap: 8px; margin-bottom: 10px; }
-  .act-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); margin-top: 4px; flex-shrink: 0; }
-  .act-t { font-size: 12px; color: var(--carbon); }
-  .act-time { font-size: 11px; color: var(--gray); margin-top: 1px; }
-  .note-inp-row { display: flex; gap: 6px; margin-top: 10px; }
-  .note-inp { flex: 1; height: 32px; border: 1px solid var(--border); border-radius: 8px; padding: 0 10px; font-size: 12px; color: var(--carbon); background: var(--white); font-family: inherit; outline: none; }
-  .note-inp:focus { border-color: var(--salvia); }
-  .det-del { margin-top: 24px; padding-top: 16px; border-bottom: none; border-top: 1px solid var(--border); }
-
-  /* ── CONFIRM MODAL ── */
-  .modal-sm { width: 380px; }
-  .modal-body-text { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 18px; }
-  .modal-body-text strong { color: var(--carbon); }
-
-  /* ── EMPTY ── */
-  .empty { text-align: center; padding: 40px 20px; color: var(--gray); font-size: 13px; }
-
-  svg { display: inline-block; vertical-align: middle; }
-
-
-  .inline-inp {
-    width: 100%; min-width: 80px; border: none; background: transparent;
-    font-size: 12px; color: var(--carbon); font-family: inherit;
-    padding: 2px 4px; border-radius: 4px; outline: none;
-    cursor: text; box-sizing: border-box;
-  }
-  .inline-inp:hover { background: var(--bg2); }
-  .inline-inp:focus { background: var(--white); border: 1px solid var(--salvia); box-shadow: 0 0 0 2px rgba(107,142,107,.15); cursor: text; }
-  .inline-sel {
-    width: 100%; min-width: 80px; border: none; background: transparent;
-    font-size: 11px; font-weight: 600; color: var(--carbon);
-    font-family: inherit; padding: 2px 4px; border-radius: 4px;
-    outline: none; cursor: pointer; box-sizing: border-box;
-  }
-  .inline-sel:hover { background: var(--bg2); }
-  .inline-sel:focus { background: var(--white); border: 1px solid var(--salvia); }
-  tbody td { padding: 8px 10px; }
-
-  @media (max-width: 640px) {
-    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-    .fg2 { grid-template-columns: 1fr; }
-    .det-panel { width: 100%; right: -100%; }
-  }
+@media(max-width:640px){.metrics-grid{grid-template-columns:repeat(2,1fr);}.fg2{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -289,170 +151,107 @@
 <header class="topbar">
   <div class="logo">BLÜM GROUP <span>CRM · Inmobiliario</span></div>
   <div class="topbar-right">
-    <button class="btn btn-outline" onclick="openModal('lead')">
-      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      Nuevo lead
-    </button>
-    <button class="btn btn-dark" onclick="openModal('cliente')">
-      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      Nuevo cliente
-    </button>
+    <button class="btn btn-outline" onclick="openModal('lead')">+ Nuevo lead</button>
+    <button class="btn btn-dark" onclick="openModal('cliente')">+ Nuevo cliente</button>
   </div>
 </header>
 <div class="stripe"></div>
 
 <nav class="nav">
-  <button class="tab active" id="tab-dashboard" onclick="switchTab('dashboard',this)">
-    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="13" width="4" height="8"/><rect x="10" y="9" width="4" height="12"/><rect x="17" y="5" width="4" height="16"/></svg>
-    Dashboard
-  </button>
-  <button class="tab" id="tab-leads" onclick="switchTab('leads',this)">
-    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
-    Leads <span class="tab-count" id="tc-leads">0</span>
-  </button>
-  <button class="tab" id="tab-clientes" onclick="switchTab('clientes',this)">
-    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>
-    Clientes <span class="tab-count" id="tc-clientes">0</span>
-  </button>
-  <button class="tab" id="tab-inmuebles" onclick="switchTab('inmuebles',this)">
-    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-    Inmuebles <span class="tab-count" id="tc-inmuebles">0</span>
-  </button>
+  <button class="tab active" id="tab-dashboard" onclick="switchTab('dashboard',this)">Dashboard</button>
+  <button class="tab" id="tab-leads" onclick="switchTab('leads',this)">Leads <span class="tab-count" id="tc-leads">0</span></button>
+  <button class="tab" id="tab-clientes" onclick="switchTab('clientes',this)">Clientes <span class="tab-count" id="tc-clientes">0</span></button>
+  <button class="tab" id="tab-inmuebles" onclick="switchTab('inmuebles',this)">Inmuebles <span class="tab-count" id="tc-inmuebles">0</span></button>
 </nav>
 
 <main class="main">
 
   <!-- DASHBOARD -->
   <div id="view-dashboard" class="view active">
-    <div class="metrics-section">
-      <div class="section-label">Inmuebles</div>
-      <div class="metrics-grid" id="m-inmuebles"></div>
-    </div>
-    <div class="metrics-section">
-      <div class="section-label terra">Leads</div>
-      <div class="metrics-grid" id="m-leads"></div>
-    </div>
-    <div class="metrics-section">
-      <div class="section-label carbon">Clientes</div>
-      <div class="metrics-grid" id="m-clientes"></div>
-    </div>
-    <div class="priority-section">
-      <div class="section-label red">Pendientes — Acción inmediata</div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Nombre</th><th>Inmueble</th><th>Estado</th><th>Pendiente</th><th>Prioridad</th>
-          </tr></thead>
-          <tbody id="priority-tbody"></tbody>
-        </table>
-      </div>
+    <div class="section-label">Inmuebles en gestión</div>
+    <div class="metrics-grid" id="m-inmuebles"></div>
+    <div class="section-label terra">Leads</div>
+    <div class="metrics-grid" id="m-leads"></div>
+    <div class="section-label carbon">Clientes</div>
+    <div class="metrics-grid" id="m-clientes"></div>
+    <div class="section-label red">Pendientes — Acción inmediata</div>
+    <div class="table-wrap" style="border-radius:0 8px 8px 8px;">
+      <table><thead><tr><th>Nombre</th><th>Inmueble</th><th>Estado</th><th>Pendiente</th><th>Prioridad</th></tr></thead>
+      <tbody id="priority-tbody"></tbody></table>
     </div>
   </div>
 
   <!-- LEADS -->
   <div id="view-leads" class="view">
     <div class="toolbar">
-      <div class="search">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" placeholder="Buscar nombre, inmueble, teléfono…" id="search-leads" oninput="renderLeads()">
+      <div class="search"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Buscar…" id="search-leads" oninput="renderLeads()">
       </div>
-      <select class="fsel" id="filter-leads-etapa" onchange="renderLeads()">
+      <select class="fsel" id="fl-etapa" onchange="renderLeads()">
         <option value="">Todas las etapas</option>
-        <option>Nuevo</option><option>Contactado</option>
-        <option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option>
+        <option>Nuevo</option><option>Contactado</option><option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option>
       </select>
-      <select class="fsel" id="filter-leads-prio" onchange="renderLeads()">
-        <option value="">Toda prioridad</option>
-        <option>Alta</option><option>Media</option><option>Baja</option>
+      <select class="fsel" id="fl-prio" onchange="renderLeads()">
+        <option value="">Toda prioridad</option><option>Alta</option><option>Media</option><option>Baja</option>
       </select>
     </div>
-    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
-      <table>
-        <thead><tr>
-          <th style="min-width:140px">Nombre</th>
-          <th style="min-width:120px">Teléfono</th>
-          <th style="min-width:150px">Inmueble de interés</th>
-          <th style="min-width:140px">Etapa</th>
-          <th style="min-width:130px">Estado inmueble</th>
-          <th style="min-width:120px">Línea</th>
-          <th style="min-width:90px">Prioridad</th>
-          <th style="width:80px"></th>
-        </tr></thead>
-        <tbody id="leads-tbody"></tbody>
-      </table>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th style="min-width:140px">Nombre</th><th style="min-width:120px">Teléfono</th>
+        <th style="min-width:150px">Inmueble</th><th style="min-width:150px">Etapa</th>
+        <th style="min-width:130px">Estado</th><th style="min-width:120px">Línea</th>
+        <th style="min-width:90px">Prioridad</th><th style="width:80px"></th>
+      </tr></thead><tbody id="leads-tbody"></tbody></table>
     </div>
   </div>
 
   <!-- CLIENTES -->
   <div id="view-clientes" class="view">
     <div class="toolbar">
-      <div class="search">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" placeholder="Buscar nombre, inmueble, teléfono…" id="search-clientes" oninput="renderClientes()">
+      <div class="search"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" placeholder="Buscar…" id="search-clientes" oninput="renderClientes()">
       </div>
-      <select class="fsel" id="filter-cli-etapa" onchange="renderClientes()">
+      <select class="fsel" id="fc-etapa" onchange="renderClientes()">
         <option value="">Todas las etapas</option>
-        <option>Visita agendada</option><option>Propuesta enviada</option>
-        <option>En negociación</option><option>Cerrado</option>
+        <option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option><option>Cerrado</option>
       </select>
-      <select class="fsel" id="filter-cli-prio" onchange="renderClientes()">
-        <option value="">Toda prioridad</option>
-        <option>Alta</option><option>Media</option><option>Baja</option>
+      <select class="fsel" id="fc-prio" onchange="renderClientes()">
+        <option value="">Toda prioridad</option><option>Alta</option><option>Media</option><option>Baja</option>
       </select>
     </div>
-    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
-      <table>
-        <thead><tr>
-          <th style="min-width:140px">Nombre</th>
-          <th style="min-width:120px">Teléfono</th>
-          <th style="min-width:150px">Inmueble</th>
-          <th style="min-width:140px">Etapa</th>
-          <th style="min-width:130px">Estado</th>
-          <th style="min-width:120px">Contrato</th>
-          <th style="min-width:90px">Prioridad</th>
-          <th style="min-width:160px">Pendiente</th>
-          <th style="width:80px"></th>
-        </tr></thead>
-        <tbody id="clientes-tbody"></tbody>
-      </table>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th style="min-width:140px">Nombre</th><th style="min-width:120px">Teléfono</th>
+        <th style="min-width:150px">Inmueble</th><th style="min-width:150px">Etapa</th>
+        <th style="min-width:130px">Estado</th><th style="min-width:120px">Contrato</th>
+        <th style="min-width:90px">Prioridad</th><th style="min-width:160px">Pendiente</th><th style="width:80px"></th>
+      </tr></thead><tbody id="clientes-tbody"></tbody></table>
     </div>
   </div>
-
 
   <!-- INMUEBLES -->
   <div id="view-inmuebles" class="view">
     <div class="toolbar">
-      <div class="search">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <div class="search"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <input type="text" placeholder="Buscar propiedad o propietario…" id="search-inmuebles" oninput="renderInmuebles()">
       </div>
-      <select class="fsel" id="filter-inm-estado" onchange="renderInmuebles()">
+      <select class="fsel" id="fi-estado" onchange="renderInmuebles()">
         <option value="">Todos los estados</option>
-        <option>Administrando</option><option>Disponible</option>
-        <option>Ocupado</option><option>Publicado</option><option>En negociación</option><option>En venta</option>
+        <option>Administrando</option><option>Disponible</option><option>Ocupado</option>
+        <option>Publicado</option><option>En negociación</option><option>En venta</option>
       </select>
-      <button class="btn btn-dark" onclick="openModalInmueble()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        Nuevo inmueble
-      </button>
+      <button class="btn btn-dark" onclick="openModalInmueble()">+ Nuevo inmueble</button>
     </div>
-    <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
-      <table>
-        <thead><tr>
-          <th style="min-width:140px">Propiedad</th>
-          <th style="min-width:120px">Propietario</th>
-          <th style="min-width:110px">Sector</th>
-          <th style="min-width:120px">Tipo</th>
-          <th style="min-width:140px">Estado</th>
-          <th style="min-width:140px">Plataforma</th>
-          <th style="min-width:100px">Prioridad</th>
-          <th style="min-width:160px">Notas</th>
-          <th style="width:40px"></th>
-        </tr></thead>
-        <tbody id="inmuebles-tbody"></tbody>
-      </table>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th style="min-width:150px">Propiedad</th><th style="min-width:120px">Propietario</th>
+        <th style="min-width:110px">Sector</th><th style="min-width:130px">Tipo</th>
+        <th style="min-width:150px">Estado</th><th style="min-width:150px">Plataforma</th>
+        <th style="min-width:100px">Prioridad</th><th style="min-width:160px">Notas</th><th style="width:40px"></th>
+      </tr></thead><tbody id="inmuebles-tbody"></tbody></table>
     </div>
   </div>
+
 </main>
 
 <!-- DETAIL PANEL -->
@@ -461,91 +260,57 @@
   <div class="det-top">
     <div class="det-toprow">
       <span style="font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;">Ficha</span>
-      <button class="modal-x" onclick="closeDetail()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
+      <button class="modal-x" onclick="closeDetail()">✕</button>
     </div>
     <div id="det-top-content"></div>
   </div>
   <div class="det-body" id="det-body"></div>
 </div>
 
-<!-- NEW CONTACT MODAL -->
+<!-- CONTACT MODAL -->
 <div class="modal-bg" id="contact-modal">
   <div class="modal">
-    <div class="modal-hdr">
-      <span class="modal-title" id="modal-title-text">Nuevo contacto</span>
-      <button class="modal-x" onclick="closeContactModal()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
+    <div class="modal-hdr"><span class="modal-title" id="modal-title-text">Nuevo contacto</span>
+      <button class="modal-x" onclick="closeContactModal()">✕</button></div>
     <div class="fg2">
-      <div class="fg"><label class="fl">Nombre / Empresa *</label><input class="fc" id="f-nombre" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Nombre *</label><input class="fc" id="f-nombre" placeholder="Nombre completo"></div>
       <div class="fg"><label class="fl">Teléfono / WA</label><input class="fc" id="f-tel" placeholder="+57 300 000 0000"></div>
       <div class="fg"><label class="fl">Inmueble de interés</label><input class="fc" id="f-inmueble" placeholder="Ej: Apto Betania 302"></div>
       <div class="fg"><label class="fl">Línea</label>
-        <select class="fc" id="f-linea">
-          <option>Administración</option><option>Rentas cortas</option>
-          <option>Ventas</option><option>Proyectos</option>
-        </select>
-      </div>
-      <div class="fg" id="fg-etapa"><label class="fl">Etapa</label>
-        <select class="fc" id="f-etapa">
-          <option>Nuevo</option><option>Contactado</option>
-          <option>Visita agendada</option><option>Propuesta enviada</option><option>En negociación</option>
-        </select>
-      </div>
-      <div class="fg" id="fg-estado-inm"><label class="fl">Estado inmueble</label>
-        <select class="fc" id="f-estado-inm">
-          <option>Disponible</option><option>En negociación</option><option>Publicado</option>
-          <option>Ocupado</option><option>En venta</option><option>Administrando</option>
-        </select>
-      </div>
+        <select class="fc" id="f-linea"><option>Administración</option><option>Rentas cortas</option><option>Ventas</option><option>Proyectos</option></select></div>
+      <div class="fg"><label class="fl">Etapa</label><select class="fc" id="f-etapa"></select></div>
+      <div class="fg"><label class="fl">Estado inmueble</label>
+        <select class="fc" id="f-estado-inm"><option>Disponible</option><option>En negociación</option><option>Publicado</option><option>Ocupado</option><option>En venta</option><option>Administrando</option></select></div>
       <div class="fg" id="fg-contrato" style="display:none"><label class="fl">Contrato</label>
-        <select class="fc" id="f-contrato">
-          <option>Pendiente</option><option>Pendiente firma</option><option>Firmado</option><option>Renovar</option>
-        </select>
-      </div>
+        <select class="fc" id="f-contrato"><option>Pendiente</option><option>Pendiente firma</option><option>Firmado</option><option>Renovar</option></select></div>
       <div class="fg"><label class="fl">Prioridad</label>
-        <select class="fc" id="f-prio">
-          <option>Alta</option><option selected>Media</option><option>Baja</option>
-        </select>
-      </div>
+        <select class="fc" id="f-prio"><option>Alta</option><option selected>Media</option><option>Baja</option></select></div>
     </div>
-    <div class="fg"><label class="fl">Pendiente / Notas</label>
-      <input class="fc" id="f-nota" placeholder="Ej: Pendiente firma acuerdo">
-    </div>
+    <div class="fg"><label class="fl">Pendiente / Notas</label><input class="fc" id="f-nota" placeholder="Ej: Pendiente firma acuerdo"></div>
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closeContactModal()">Cancelar</button>
-      <button class="btn btn-dark" id="modal-save-btn" onclick="saveContact()">Guardar</button>
+      <button class="btn btn-dark" onclick="saveContact()">Guardar</button>
     </div>
   </div>
 </div>
 
-
-<!-- NEW INMUEBLE MODAL -->
+<!-- INMUEBLE MODAL -->
 <div class="modal-bg" id="inmueble-modal">
   <div class="modal">
-    <div class="modal-hdr">
-      <span class="modal-title">Nuevo inmueble</span>
-      <button class="modal-x" onclick="closeInmuebleModal()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
+    <div class="modal-hdr"><span class="modal-title">Nuevo inmueble</span>
+      <button class="modal-x" onclick="closeInmuebleModal()">✕</button></div>
     <div class="fg2">
-      <div class="fg"><label class="fl">Propiedad / Referencia *</label><input class="fc" id="i-nombre" placeholder="Ej: Apto Betania 302"></div>
-      <div class="fg"><label class="fl">Propietario</label><input class="fc" id="i-propietario" placeholder="Nombre del propietario"></div>
+      <div class="fg"><label class="fl">Propiedad *</label><input class="fc" id="i-nombre" placeholder="Ej: Apto Betania 302"></div>
+      <div class="fg"><label class="fl">Propietario</label><input class="fc" id="i-propietario" placeholder="Nombre"></div>
       <div class="fg"><label class="fl">Sector / Barrio</label><input class="fc" id="i-sector" placeholder="Ej: Betania"></div>
       <div class="fg"><label class="fl">Tipo</label>
-        <select class="fc" id="i-tipo"><option>Apartamento</option><option>Casa</option><option>Estudio</option><option>Local</option><option>Cabaña</option><option>Lote</option></select>
-      </div>
+        <select class="fc" id="i-tipo"><option>Apartamento</option><option>Casa</option><option>Estudio</option><option>Local</option><option>Cabaña</option><option>Lote</option></select></div>
       <div class="fg"><label class="fl">Estado</label>
-        <select class="fc" id="i-estado"><option>Administrando</option><option>Disponible</option><option>Ocupado</option><option>Publicado</option><option>En negociación</option><option>En venta</option><option>Mantenimiento</option></select>
-      </div>
-      <div class="fg"><label class="fl">Plataforma</label><input class="fc" id="i-plataforma" placeholder="Airbnb, Booking, etc."></div>
+        <select class="fc" id="i-estado"><option>Administrando</option><option>Disponible</option><option>Ocupado</option><option>Publicado</option><option>En negociación</option><option>En venta</option><option>Mantenimiento</option></select></div>
+      <div class="fg"><label class="fl">Plataforma</label>
+        <select class="fc" id="i-plataforma"><option value="">—</option><option>Todas</option><option>Airbnb</option><option>Booking.com</option><option>Airbnb / Booking</option><option>Vrbo</option><option>Directo</option></select></div>
       <div class="fg"><label class="fl">Prioridad</label>
-        <select class="fc" id="i-prio"><option>Alta</option><option selected>Media</option><option>Baja</option></select>
-      </div>
+        <select class="fc" id="i-prio"><option>Alta</option><option selected>Media</option><option>Baja</option></select></div>
     </div>
     <div class="fg"><label class="fl">Notas</label><input class="fc" id="i-nota" placeholder="Observaciones"></div>
     <div class="modal-foot">
@@ -557,14 +322,10 @@
 
 <!-- CONFIRM DELETE -->
 <div class="modal-bg" id="confirm-modal">
-  <div class="modal modal-sm">
-    <div class="modal-hdr">
-      <span class="modal-title">Eliminar contacto</span>
-      <button class="modal-x" onclick="closeConfirm()">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <p class="modal-body-text">¿Eliminar a <strong id="confirm-name"></strong>? Esta acción no se puede deshacer.</p>
+  <div class="modal" style="width:380px;">
+    <div class="modal-hdr"><span class="modal-title">Eliminar</span>
+      <button class="modal-x" onclick="closeConfirm()">✕</button></div>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:18px;">¿Eliminar a <strong id="confirm-name"></strong>? No se puede deshacer.</p>
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closeConfirm()">Cancelar</button>
       <button class="btn btn-red" onclick="doDelete()">Eliminar</button>
@@ -572,50 +333,131 @@
   </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
+// ── STORAGE ──────────────────────────────────────
+const KEYS = { leads:'blum_leads', clientes:'blum_clientes', inmuebles:'blum_inmuebles', nextId:'blum_nextid' };
+
+function save(key, data){ try{ localStorage.setItem(key, JSON.stringify(data)); }catch(e){} }
+function load(key, def){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):def; }catch(e){ return def; } }
+
 // ── DATOS INICIALES ──────────────────────────────
-const AVATAR_COLORS=[
-  {bg:'#E8EFFC',c:'#1A4FA0'},{bg:'#E8F5EE',c:'#1A6B45'},
-  {bg:'#FEF3DB',c:'#8A5A00'},{bg:'#F0EBFC',c:'#5A3A9A'},
-  {bg:'#F5EDE4',c:'#B08968'},{bg:'#E8F0E8',c:'#6B8E6B'}
-];
-function avColor(n){let h=0;for(let c of n)h=(h*31+c.charCodeAt(0))&0xff;return AVATAR_COLORS[h%AVATAR_COLORS.length];}
-function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?';}
-function hoy(){return new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}
-
-const ETAPA_LEADS = ['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación'];
-const ETAPA_CLI   = ['Visita agendada','Propuesta enviada','En negociación','Cerrado'];
-
-let leads = [
+const DEFAULT_LEADS = [
   {id:1,nombre:'Eugenio',tel:'',inmueble:'Urb. Santuario',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Pendiente hacer propuesta',activity:[{t:'Lead creado',d:'Jun 2025'}]},
   {id:2,nombre:'Casa Group',tel:'',inmueble:'Apto Local Boston',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Por visitar',activity:[{t:'Lead creado',d:'Jun 2025'}]},
   {id:3,nombre:'Casa Group',tel:'',inmueble:'Local Boston',etapa:'Contactado',estadoInm:'En negociación',linea:'Administración',prioridad:'Media',nota:'Por visitar',activity:[{t:'Lead creado',d:'Jun 2025'}]},
 ];
-let clientes = [
+const DEFAULT_CLIENTES = [
   {id:10,nombre:'Orly',tel:'',inmueble:'Gran Plaza 85 — Apto',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente firma',prioridad:'Alta',nota:'Confirmar renta corta + firma acuerdo',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
   {id:11,nombre:'Margarita Amaya',tel:'',inmueble:'Cabaña',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente',prioridad:'Alta',nota:'Pendiente por cerrar',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
   {id:12,nombre:'Margarita Amaya',tel:'',inmueble:'Apto Mallorquín',etapa:'En negociación',estadoInm:'En negociación',contrato:'Pendiente',prioridad:'Alta',nota:'Pendiente por cerrar',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
   {id:13,nombre:'Casa Group',tel:'',inmueble:'Apto Betania Edif.',etapa:'En negociación',estadoInm:'En venta',contrato:'Pendiente',prioridad:'Alta',nota:'Visitar — publicado para venta',activity:[{t:'Cliente creado',d:'Jun 2025'}]},
-  {id:14,nombre:'Valerie',tel:'',inmueble:'Central Park 501',etapa:'Cerrado',estadoInm:'Publicado',contrato:'Firmado',prioridad:'Media',nota:'Seguimiento publicación renta tradicional',activity:[{t:'Contrato firmado',d:'Jun 2025'},{t:'Cliente creado',d:'May 2025'}]},
+  {id:14,nombre:'Valerie',tel:'',inmueble:'Central Park 501',etapa:'Cerrado',estadoInm:'Publicado',contrato:'Firmado',prioridad:'Media',nota:'Seguimiento publicación renta tradicional',activity:[{t:'Contrato firmado',d:'Jun 2025'}]},
 ];
-let nextId = 20;
+const DEFAULT_INMUEBLES = [
+  {id:100,nombre:'Camino de Alcázar',propietario:'Cecilia',sector:'Camino de Alcázar',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb / Booking',prioridad:'Media',nota:''},
+  {id:101,nombre:'Casa Magdalena',propietario:'Mabel',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
+  {id:102,nombre:'Palmanova',propietario:'Mabel',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
+  {id:103,nombre:'Firenze',propietario:'Camilo',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
+  {id:104,nombre:'Casa Juliana',propietario:'Nurys / Juan Carlos',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
+];
 
-// ── BADGES ───────────────────────────────────────
-const BADGE = {
-  etapa: {
-    'Nuevo':'b-gray','Contactado':'b-gray',
-    'Visita agendada':'b-salvia','Propuesta enviada':'b-terra',
-    'En negociación':'b-amber','Cerrado':'b-salvia',
-  },
-  estadoInm: {
-    'Administrando':'b-salvia','Disponible':'b-salvia','Publicado':'b-salvia-m',
-    'Ocupado':'b-terra','En negociación':'b-amber','En venta':'b-terra','Mantenimiento':'b-red',
-  },
-  prioridad: { 'Alta':'b-red','Media':'b-amber','Baja':'b-salvia' },
-  contrato:  { 'Firmado':'b-salvia','Pendiente firma':'b-amber','Pendiente':'b-amber','Renovar':'b-terra' },
-  linea:     { 'Administración':'b-salvia','Rentas cortas':'b-salvia-m','Ventas':'b-terra','Proyectos':'b-gray' },
+let leads     = load(KEYS.leads,     DEFAULT_LEADS);
+let clientes  = load(KEYS.clientes,  DEFAULT_CLIENTES);
+let inmuebles = load(KEYS.inmuebles, DEFAULT_INMUEBLES);
+let nextId    = load(KEYS.nextId,    200);
+
+function persist(){
+  save(KEYS.leads,     leads);
+  save(KEYS.clientes,  clientes);
+  save(KEYS.inmuebles, inmuebles);
+  save(KEYS.nextId,    nextId);
+}
+
+// ── HELPERS ──────────────────────────────────────
+const AV=[{bg:'#E8EFFC',c:'#1A4FA0'},{bg:'#E8F5EE',c:'#1A6B45'},{bg:'#FEF3DB',c:'#8A5A00'},{bg:'#F0EBFC',c:'#5A3A9A'},{bg:'#F5EDE4',c:'#B08968'},{bg:'#E8F0E8',c:'#6B8E6B'}];
+function avC(n){let h=0;for(let c of n)h=(h*31+c.charCodeAt(0))&0xff;return AV[h%AV.length];}
+function ini(n){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?';}
+function hoy(){return new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'});}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+const BADGE={
+  etapa:{'Nuevo':'b-gray','Contactado':'b-gray','Visita agendada':'b-salvia','Propuesta enviada':'b-terra','En negociación':'b-amber','Cerrado':'b-salvia'},
+  estadoInm:{'Administrando':'b-salvia','Disponible':'b-salvia','Publicado':'b-salvia-m','Ocupado':'b-terra','En negociación':'b-amber','En venta':'b-terra','Mantenimiento':'b-red'},
+  prioridad:{'Alta':'b-red','Media':'b-amber','Baja':'b-salvia'},
+  contrato:{'Firmado':'b-salvia','Pendiente firma':'b-amber','Pendiente':'b-amber','Renovar':'b-terra'},
+  linea:{'Administración':'b-salvia','Rentas cortas':'b-salvia-m','Ventas':'b-terra','Proyectos':'b-gray'},
+  estado:{'Administrando':'b-salvia','Disponible':'b-salvia','Publicado':'b-salvia-m','Ocupado':'b-terra','En negociación':'b-amber','En venta':'b-terra','Mantenimiento':'b-red'},
 };
-function bdg(val,type){const cl=BADGE[type]?.[val]||'b-gray';return `<span class="badge ${cl}">${val||'—'}</span>`;}
+function bdg(val,type){return `<span class="badge ${BADGE[type]?.[val]||'b-gray'}">${val||'—'}</span>`;}
+
+// ── INLINE EDIT ───────────────────────────────────
+function eInp(arr,id,field,val){
+  return `<input class="inline-inp" value="${(val||'').replace(/"/g,'&quot;')}" 
+    onblur="updateF('${arr}',${id},'${field}',this.value)"
+    onkeydown="if(event.key==='Enter')this.blur()">`;
+}
+function eSel(arr,id,field,val,opts){
+  const o=opts.map(op=>`<option${op===val?' selected':''}>${op}</option>`).join('');
+  return `<select class="inline-sel" onchange="updateF('${arr}',${id},'${field}',this.value)">${o}</select>`;
+}
+
+function updateF(arr,id,field,val){
+  const list=arr==='leads'?leads:arr==='clientes'?clientes:inmuebles;
+  const rec=list.find(x=>x.id===id); if(!rec)return;
+  rec[field]=val;
+  persist();
+
+  // ── REGLA: si lead cambia etapa a "Administrando" → mover a Inmuebles
+  if(arr==='leads' && field==='etapa' && val==='Administrando'){
+    moverLeadAInmuebles(id); return;
+  }
+  // ── REGLA: si cliente cambia etapa a "Cerrado" → notificar
+  if(arr==='clientes' && field==='etapa' && val==='Cerrado'){
+    toast('✅ Cliente cerrado — movido al historial');
+  }
+
+  renderAll();
+}
+
+// ── MOVER LEAD → INMUEBLES ────────────────────────
+function moverLeadAInmuebles(leadId){
+  const lead=leads.find(x=>x.id===leadId);
+  if(!lead)return;
+
+  // Crear inmueble nuevo basado en el lead
+  const nuevo={
+    id:nextId++,
+    nombre: lead.inmueble||lead.nombre,
+    propietario: lead.nombre,
+    sector:'',
+    tipo:'Apartamento',
+    estado:'Administrando',
+    plataforma:'',
+    prioridad: lead.prioridad,
+    nota: lead.nota||'',
+  };
+  inmuebles.push(nuevo);
+
+  // Quitar el lead
+  leads=leads.filter(x=>x.id!==leadId);
+  persist();
+  renderAll();
+
+  toast(`✅ "${nuevo.nombre}" movido a Inmuebles`);
+
+  // Ir a pestaña Inmuebles
+  setTimeout(()=>{
+    switchTab('inmuebles', document.getElementById('tab-inmuebles'));
+  }, 800);
+}
 
 // ── TABS ─────────────────────────────────────────
 function switchTab(id,btn){
@@ -624,153 +466,157 @@ function switchTab(id,btn){
   document.getElementById('view-'+id).classList.add('active');
   btn.classList.add('active');
   closeDetail();
-  if(id==='dashboard')renderDashboard();
-  if(id==='leads')renderLeads();
-  if(id==='clientes')renderClientes();
-  if(id==='inmuebles')renderInmuebles();
+  renderAll();
 }
+
 function updateCounts(){
   document.getElementById('tc-leads').textContent=leads.length;
   document.getElementById('tc-clientes').textContent=clientes.length;
+  document.getElementById('tc-inmuebles').textContent=inmuebles.length;
+}
+
+function renderAll(){
+  updateCounts();
+  renderDashboard();
+  renderLeads();
+  renderClientes();
+  renderInmuebles();
 }
 
 // ── DASHBOARD ─────────────────────────────────────
 function renderDashboard(){
-  const totalInm = inmuebles.length;
-  const dispInm  = inmuebles.filter(x=>x.estado==='Disponible').length;
-  const negInm   = inmuebles.filter(x=>x.estado==='En negociación').length;
-  const admInm   = inmuebles.filter(x=>x.estado==='Administrando').length;
+  const adm=inmuebles.filter(i=>i.estado==='Administrando').length;
+  const disp=inmuebles.filter(i=>i.estado==='Disponible').length;
+  const neg=inmuebles.filter(i=>i.estado==='En negociación').length;
   document.getElementById('m-inmuebles').innerHTML=`
-    <div class="metric"><div class="metric-label">Total en gestión</div><div class="metric-val">${totalInm}</div></div>
-    <div class="metric salvia"><div class="metric-label">Administrando</div><div class="metric-val">${admInm}</div></div>
-    <div class="metric salvia"><div class="metric-label">Disponibles</div><div class="metric-val">${dispInm}</div></div>
-    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${negInm}</div></div>`;
+    <div class="metric"><div class="metric-label">Total</div><div class="metric-val">${inmuebles.length}</div></div>
+    <div class="metric salvia"><div class="metric-label">Administrando</div><div class="metric-val">${adm}</div></div>
+    <div class="metric salvia"><div class="metric-label">Disponibles</div><div class="metric-val">${disp}</div></div>
+    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${neg}</div></div>`;
 
-  const leadsAlta = leads.filter(l=>l.prioridad==='Alta').length;
-  const leadsNuevo= leads.filter(l=>l.etapa==='Nuevo').length;
+  const lAlta=leads.filter(l=>l.prioridad==='Alta').length;
   document.getElementById('m-leads').innerHTML=`
     <div class="metric"><div class="metric-label">Total leads</div><div class="metric-val">${leads.length}</div></div>
-    <div class="metric"><div class="metric-label">Nuevos</div><div class="metric-val">${leadsNuevo}</div></div>
-    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${leadsAlta}</div></div>
-    <div class="metric terra"><div class="metric-label">Líneas activas</div><div class="metric-val">${new Set(leads.map(l=>l.linea)).size}</div></div>`;
+    <div class="metric"><div class="metric-label">Nuevos</div><div class="metric-val">${leads.filter(l=>l.etapa==='Nuevo').length}</div></div>
+    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${lAlta}</div></div>
+    <div class="metric terra"><div class="metric-label">En negociación</div><div class="metric-val">${leads.filter(l=>l.etapa==='En negociación').length}</div></div>`;
 
-  const cliNeg    = clientes.filter(c=>c.etapa==='En negociación').length;
-  const cliCerrado= clientes.filter(c=>c.etapa==='Cerrado').length;
-  const cliAlta   = clientes.filter(c=>c.prioridad==='Alta').length;
+  const cNeg=clientes.filter(c=>c.etapa==='En negociación').length;
+  const cCerrado=clientes.filter(c=>c.etapa==='Cerrado').length;
   document.getElementById('m-clientes').innerHTML=`
     <div class="metric"><div class="metric-label">Total clientes</div><div class="metric-val">${clientes.length}</div></div>
-    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${cliNeg}</div></div>
-    <div class="metric salvia"><div class="metric-label">Cerrados</div><div class="metric-val">${cliCerrado}</div></div>
-    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${cliAlta}</div></div>`;
+    <div class="metric amber"><div class="metric-label">En negociación</div><div class="metric-val">${cNeg}</div></div>
+    <div class="metric salvia"><div class="metric-label">Cerrados</div><div class="metric-val">${cCerrado}</div></div>
+    <div class="metric red"><div class="metric-label">Prioridad Alta</div><div class="metric-val">${clientes.filter(c=>c.prioridad==='Alta').length}</div></div>`;
 
-  const priority = [...leads,...clientes].filter(x=>x.prioridad==='Alta'||x.prioridad==='Media').sort((a,b)=>(a.prioridad==='Alta'?0:1)-(b.prioridad==='Alta'?0:1));
-  const tbody = document.getElementById('priority-tbody');
+  const priority=[...leads,...clientes].filter(x=>x.prioridad==='Alta'||x.prioridad==='Media').sort((a,b)=>a.prioridad==='Alta'?-1:1);
+  const tbody=document.getElementById('priority-tbody');
   if(!priority.length){tbody.innerHTML='<tr><td colspan="5" class="empty">Sin pendientes urgentes</td></tr>';return;}
-  tbody.innerHTML=priority.map(x=>`
-    <tr>
-      <td><div class="name-cell"><div class="avatar" style="background:${avColor(x.nombre).bg};color:${avColor(x.nombre).c}">${ini(x.nombre)}</div><div><div class="cname">${x.nombre}</div></div></div></td>
-      <td style="color:var(--gray);font-size:12px;">${x.inmueble||'—'}</td>
-      <td>${bdg(x.estadoInm,'estadoInm')}</td>
-      <td style="font-size:12px;color:var(--gray);">${x.nota||'—'}</td>
-      <td>${bdg(x.prioridad,'prioridad')}</td>
-    </tr>`).join('');
+  tbody.innerHTML=priority.map(x=>`<tr>
+    <td><div class="name-cell"><div class="avatar" style="background:${avC(x.nombre).bg};color:${avC(x.nombre).c}">${ini(x.nombre)}</div><b style="font-size:12px">${x.nombre}</b></div></td>
+    <td style="color:var(--gray)">${x.inmueble||'—'}</td>
+    <td>${bdg(x.estadoInm||x.estado,'estadoInm')}</td>
+    <td style="color:var(--gray);font-size:12px">${x.nota||'—'}</td>
+    <td>${bdg(x.prioridad,'prioridad')}</td>
+  </tr>`).join('');
 }
 
-// ── LEADS TABLE ───────────────────────────────────
-function editField(arr, id, field, value, type, options){
-  if(options){
-    const opts=options.map(o=>`<option value="${o}"${o===value?' selected':''}>${o}</option>`).join('');
-    return `<select class="inline-sel" onchange="updateField('${arr}',${id},'${field}',this.value)">${opts}</select>`;
-  }
-  return `<input class="inline-inp" type="${type||'text'}" value="${value||''}" onblur="updateField('${arr}',${id},'${field}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">`;
-}
-function updateField(arr, id, field, value){
-  const list = arr==='leads'?leads:clientes;
-  const rec = list.find(x=>x.id===id);
-  if(!rec) return;
-  rec[field]=value;
-  if(arr==='leads') renderLeads(); else renderClientes();
-  renderDashboard();
-}
+// ── LEADS ─────────────────────────────────────────
 function renderLeads(){
   const q=(document.getElementById('search-leads').value||'').toLowerCase();
-  const ef=document.getElementById('filter-leads-etapa').value;
-  const pf=document.getElementById('filter-leads-prio').value;
+  const ef=document.getElementById('fl-etapa').value;
+  const pf=document.getElementById('fl-prio').value;
   const list=leads.filter(l=>{
     const m=l.nombre.toLowerCase().includes(q)||(l.inmueble||'').toLowerCase().includes(q)||(l.tel||'').includes(q);
     return m&&(!ef||l.etapa===ef)&&(!pf||l.prioridad===pf);
   });
-  const tbody=document.getElementById('leads-tbody');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="8" class="empty">Sin leads</td></tr>';return;}
-  tbody.innerHTML=list.map(l=>{
-    const av=avColor(l.nombre);
+  const tb=document.getElementById('leads-tbody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin leads</td></tr>';return;}
+  tb.innerHTML=list.map(l=>{
+    const av=avC(l.nombre);
     return `<tr>
-      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(l.nombre)}</div><div>${editField('leads',l.id,'nombre',l.nombre)}</div></div></td>
-      <td>${editField('leads',l.id,'tel',l.tel)}</td>
-      <td>${editField('leads',l.id,'inmueble',l.inmueble)}</td>
-      <td>${editField('leads',l.id,'etapa',l.etapa,'text',['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación'])}</td>
-      <td>${editField('leads',l.id,'estadoInm',l.estadoInm,'text',['Disponible','Administrando','Ocupado','Publicado','En negociación','En venta'])}</td>
-      <td>${editField('leads',l.id,'linea',l.linea,'text',['Administración','Rentas cortas','Ventas','Proyectos'])}</td>
-      <td>${editField('leads',l.id,'prioridad',l.prioridad,'text',['Alta','Media','Baja'])}</td>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(l.nombre)}</div>${eInp('leads',l.id,'nombre',l.nombre)}</div></td>
+      <td>${eInp('leads',l.id,'tel',l.tel)}</td>
+      <td>${eInp('leads',l.id,'inmueble',l.inmueble)}</td>
+      <td>${eSel('leads',l.id,'etapa',l.etapa,['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación','Administrando'])}</td>
+      <td>${eSel('leads',l.id,'estadoInm',l.estadoInm,['Disponible','En negociación','Publicado','Ocupado','En venta','Administrando'])}</td>
+      <td>${eSel('leads',l.id,'linea',l.linea,['Administración','Rentas cortas','Ventas','Proyectos'])}</td>
+      <td>${eSel('leads',l.id,'prioridad',l.prioridad,['Alta','Media','Baja'])}</td>
       <td><div class="row-actions">
         <button class="btn btn-outline btn-xs" onclick="openDetail(${l.id},'lead')">Ver</button>
         <button class="btn btn-red btn-xs" onclick="askDelete(${l.id},'lead')">✕</button>
       </div></td>
-    </tr>`;
-  }).join('');
+    </tr>`;}).join('');
 }
 
-// ── CLIENTES TABLE ────────────────────────────────
+// ── CLIENTES ──────────────────────────────────────
 function renderClientes(){
   const q=(document.getElementById('search-clientes').value||'').toLowerCase();
-  const ef=document.getElementById('filter-cli-etapa').value;
-  const pf=document.getElementById('filter-cli-prio').value;
+  const ef=document.getElementById('fc-etapa').value;
+  const pf=document.getElementById('fc-prio').value;
   const list=clientes.filter(c=>{
     const m=c.nombre.toLowerCase().includes(q)||(c.inmueble||'').toLowerCase().includes(q)||(c.tel||'').includes(q);
     return m&&(!ef||c.etapa===ef)&&(!pf||c.prioridad===pf);
   });
-  const tbody=document.getElementById('clientes-tbody');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin clientes</td></tr>';return;}
-  tbody.innerHTML=list.map(c=>{
-    const av=avColor(c.nombre);
+  const tb=document.getElementById('clientes-tbody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="9" class="empty">Sin clientes</td></tr>';return;}
+  tb.innerHTML=list.map(c=>{
+    const av=avC(c.nombre);
     return `<tr>
-      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(c.nombre)}</div><div>${editField('clientes',c.id,'nombre',c.nombre)}</div></div></td>
-      <td>${editField('clientes',c.id,'tel',c.tel)}</td>
-      <td>${editField('clientes',c.id,'inmueble',c.inmueble)}</td>
-      <td>${editField('clientes',c.id,'etapa',c.etapa,'text',['Visita agendada','Propuesta enviada','En negociación','Cerrado'])}</td>
-      <td>${editField('clientes',c.id,'estadoInm',c.estadoInm,'text',['Disponible','Administrando','Ocupado','Publicado','En negociación','En venta'])}</td>
-      <td>${editField('clientes',c.id,'contrato',c.contrato,'text',['Pendiente','Pendiente firma','Firmado','Renovar'])}</td>
-      <td>${editField('clientes',c.id,'prioridad',c.prioridad,'text',['Alta','Media','Baja'])}</td>
-      <td>${editField('clientes',c.id,'nota',c.nota)}</td>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(c.nombre)}</div>${eInp('clientes',c.id,'nombre',c.nombre)}</div></td>
+      <td>${eInp('clientes',c.id,'tel',c.tel)}</td>
+      <td>${eInp('clientes',c.id,'inmueble',c.inmueble)}</td>
+      <td>${eSel('clientes',c.id,'etapa',c.etapa,['Visita agendada','Propuesta enviada','En negociación','Cerrado'])}</td>
+      <td>${eSel('clientes',c.id,'estadoInm',c.estadoInm,['Disponible','Administrando','Ocupado','Publicado','En negociación','En venta'])}</td>
+      <td>${eSel('clientes',c.id,'contrato',c.contrato,['Pendiente','Pendiente firma','Firmado','Renovar'])}</td>
+      <td>${eSel('clientes',c.id,'prioridad',c.prioridad,['Alta','Media','Baja'])}</td>
+      <td>${eInp('clientes',c.id,'nota',c.nota)}</td>
       <td><div class="row-actions">
         <button class="btn btn-outline btn-xs" onclick="openDetail(${c.id},'cliente')">Ver</button>
         <button class="btn btn-red btn-xs" onclick="askDelete(${c.id},'cliente')">✕</button>
       </div></td>
-    </tr>`;
-  }).join('');
+    </tr>`;}).join('');
+}
+
+// ── INMUEBLES ─────────────────────────────────────
+function renderInmuebles(){
+  const q=(document.getElementById('search-inmuebles').value||'').toLowerCase();
+  const ef=document.getElementById('fi-estado').value;
+  const list=inmuebles.filter(i=>{
+    const m=i.nombre.toLowerCase().includes(q)||(i.propietario||'').toLowerCase().includes(q);
+    return m&&(!ef||i.estado===ef);
+  });
+  const tb=document.getElementById('inmuebles-tbody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="9" class="empty">Sin inmuebles — agrega uno con el botón de arriba</td></tr>';return;}
+  tb.innerHTML=list.map(i=>`<tr>
+    <td><div class="name-cell"><div class="avatar" style="background:var(--salvia-l);color:var(--salvia);font-size:9px;">🏠</div>${eInp('inmuebles',i.id,'nombre',i.nombre)}</div></td>
+    <td>${eInp('inmuebles',i.id,'propietario',i.propietario)}</td>
+    <td>${eInp('inmuebles',i.id,'sector',i.sector)}</td>
+    <td>${eSel('inmuebles',i.id,'tipo',i.tipo,['Apartamento','Casa','Estudio','Local','Cabaña','Lote'])}</td>
+    <td>${eSel('inmuebles',i.id,'estado',i.estado,['Administrando','Disponible','Ocupado','Publicado','En negociación','En venta','Mantenimiento'])}</td>
+    <td>${eSel('inmuebles',i.id,'plataforma',i.plataforma,['','Todas','Airbnb','Booking.com','Airbnb / Booking','Vrbo','Directo'])}</td>
+    <td>${eSel('inmuebles',i.id,'prioridad',i.prioridad,['Alta','Media','Baja'])}</td>
+    <td>${eInp('inmuebles',i.id,'nota',i.nota)}</td>
+    <td><button class="btn btn-red btn-xs" onclick="askDeleteInm(${i.id})">✕</button></td>
+  </tr>`).join('');
 }
 
 // ── DETAIL PANEL ──────────────────────────────────
-let detType=null, detId=null;
+let detType=null,detId=null;
 function openDetail(id,type){
   detId=id; detType=type;
-  const rec=(type==='lead'?leads:clientes).find(x=>x.id===id);
-  if(!rec)return;
-  const av=avColor(rec.nombre);
+  const rec=(type==='lead'?leads:clientes).find(x=>x.id===id); if(!rec)return;
+  const av=avC(rec.nombre);
   document.getElementById('det-top-content').innerHTML=`
     <div class="det-av" style="background:${av.bg};color:${av.c}">${ini(rec.nombre)}</div>
     <div class="det-name">${rec.nombre}</div>
-    <div class="det-meta">
-      ${bdg(type==='lead'?rec.etapa:rec.etapa,'etapa')}
-      ${bdg(rec.prioridad,'prioridad')}
-    </div>`;
-  const etapas=type==='lead'?ETAPA_LEADS:ETAPA_CLI;
+    <div class="det-meta">${bdg(rec.etapa,'etapa')} ${bdg(rec.prioridad,'prioridad')}</div>`;
+  const etapas=type==='lead'?['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación','Administrando']:['Visita agendada','Propuesta enviada','En negociación','Cerrado'];
   document.getElementById('det-body').innerHTML=`
     <div class="det-sec">Datos</div>
     <div class="irow"><span class="ikey">Teléfono</span><span class="ival">${rec.tel||'—'}</span></div>
     <div class="irow"><span class="ikey">Inmueble</span><span class="ival">${rec.inmueble||'—'}</span></div>
-    <div class="irow"><span class="ikey">Estado inm.</span><span class="ival">${bdg(rec.estadoInm,'estadoInm')}</span></div>
-    ${type==='lead'?`<div class="irow"><span class="ikey">Línea</span><span class="ival">${bdg(rec.linea,'linea')}</span></div>`:''}
+    <div class="irow"><span class="ikey">Estado</span><span class="ival">${bdg(rec.estadoInm,'estadoInm')}</span></div>
     ${type==='cliente'?`<div class="irow"><span class="ikey">Contrato</span><span class="ival">${bdg(rec.contrato,'contrato')}</span></div>`:''}
     <div class="det-sec">Pendiente</div>
     <div class="note-box">${rec.nota||'Sin nota.'}</div>
@@ -795,29 +641,34 @@ function closeDetail(){
 }
 function changeEtapa(id,type,etapa){
   const arr=type==='lead'?leads:clientes;
-  const rec=arr.find(x=>x.id===id);
+  const rec=arr.find(x=>x.id===id); if(!rec)return;
   rec.etapa=etapa;
   rec.activity.unshift({t:`Etapa → ${etapa}`,d:hoy()});
+  persist();
+  if(type==='lead' && etapa==='Administrando'){
+    closeDetail();
+    moverLeadAInmuebles(id);
+    return;
+  }
   openDetail(id,type);
-  renderLeads(); renderClientes(); renderDashboard();
+  renderAll();
 }
 function addNote(id,type){
   const inp=document.getElementById('note-inp-'+id);
   const val=inp.value.trim(); if(!val)return;
   const arr=type==='lead'?leads:clientes;
   arr.find(x=>x.id===id).activity.unshift({t:val,d:hoy()});
-  inp.value='';
+  inp.value=''; persist();
   openDetail(id,type);
 }
 
-// ── MODAL CONTACTO ────────────────────────────────
+// ── MODALS ────────────────────────────────────────
 let modalType='lead';
 function openModal(type){
   modalType=type;
   document.getElementById('modal-title-text').textContent=type==='lead'?'Nuevo lead':'Nuevo cliente';
-  document.getElementById('modal-save-btn').textContent='Guardar';
   const etapaSel=document.getElementById('f-etapa');
-  etapaSel.innerHTML=(type==='lead'?ETAPA_LEADS:ETAPA_CLI).map(e=>`<option>${e}</option>`).join('');
+  etapaSel.innerHTML=(type==='lead'?['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación']:['Visita agendada','Propuesta enviada','En negociación']).map(e=>`<option>${e}</option>`).join('');
   document.getElementById('fg-contrato').style.display=type==='cliente'?'block':'none';
   document.getElementById('contact-modal').classList.add('open');
 }
@@ -828,8 +679,7 @@ function closeContactModal(){
 function saveContact(){
   const nombre=document.getElementById('f-nombre').value.trim();
   if(!nombre){alert('El nombre es obligatorio.');return;}
-  const rec={
-    id:nextId++, nombre,
+  const rec={id:nextId++,nombre,
     tel:document.getElementById('f-tel').value.trim(),
     inmueble:document.getElementById('f-inmueble').value.trim(),
     etapa:document.getElementById('f-etapa').value,
@@ -840,117 +690,62 @@ function saveContact(){
     activity:[{t:'Contacto creado',d:hoy()}]
   };
   if(modalType==='cliente') rec.contrato=document.getElementById('f-contrato').value;
-  if(modalType==='lead') leads.push(rec);
-  else clientes.push(rec);
-  closeContactModal();
-  updateCounts();
-  renderDashboard(); renderLeads(); renderClientes();
+  if(modalType==='lead') leads.push(rec); else clientes.push(rec);
+  persist(); closeContactModal(); renderAll();
   switchTab(modalType==='lead'?'leads':'clientes', document.getElementById('tab-'+(modalType==='lead'?'leads':'clientes')));
-}
-
-// ── DELETE ────────────────────────────────────────
-let pendingDelId=null, pendingDelType=null;
-function askDelete(id,type){
-  pendingDelId=id; pendingDelType=type;
-  const arr=type==='lead'?leads:clientes;
-  const rec=arr.find(x=>x.id===id);
-  document.getElementById('confirm-name').textContent=rec?rec.nombre:'este contacto';
-  document.getElementById('confirm-modal').classList.add('open');
-}
-function closeConfirm(){pendingDelId=null;pendingDelType=null;document.getElementById('confirm-modal').classList.remove('open');}
-function doDelete(){
-  if(pendingDelType==='lead') leads=leads.filter(x=>x.id!==pendingDelId);
-  else clientes=clientes.filter(x=>x.id!==pendingDelId);
-  closeConfirm(); closeDetail();
-  updateCounts(); renderDashboard(); renderLeads(); renderClientes();
-}
-
-// Click outside modals
-document.getElementById('contact-modal').addEventListener('click',function(e){if(e.target===this)closeContactModal();});
-document.getElementById('confirm-modal').addEventListener('click',function(e){if(e.target===this)closeConfirm();});
-
-
-// ── INMUEBLES ─────────────────────────────────────
-let inmuebles = [
-  {id:100,nombre:'Camino de Alcázar',propietario:'Cecilia',sector:'Camino de Alcázar',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb / Booking',prioridad:'Media',nota:''},
-  {id:101,nombre:'Casa Magdalena',propietario:'Mabel',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
-  {id:102,nombre:'Palmanova',propietario:'Mabel',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
-  {id:103,nombre:'Firenze',propietario:'Camilo',sector:'',tipo:'Apartamento',estado:'Administrando',plataforma:'Airbnb',prioridad:'Media',nota:''},
-  {id:104,nombre:'Casa Juliana',propietario:'Nurys / Juan Carlos',sector:'',tipo:'Casa',estado:'Administrando',plataforma:'',prioridad:'Media',nota:''},
-];
-let nextInmId = 110;
-
-function editableCell(id, field, value, type='text', options=null){
-  if(options){
-    const opts = options.map(o=>`<option value="${o}"${o===value?' selected':''}>${o}</option>`).join('');
-    return `<select class="inline-sel" onchange="updateInmueble(${id},'${field}',this.value)">${opts}</select>`;
-  }
-  return `<input class="inline-inp" type="${type}" value="${value||''}" onblur="updateInmueble(${id},'${field}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">`;
-}
-
-function updateInmueble(id, field, value){
-  const inm = inmuebles.find(i=>i.id===id);
-  if(!inm) return;
-  inm[field] = value;
-  renderInmuebles();
-  renderDashboard();
-}
-
-function renderInmuebles(){
-  const q=(document.getElementById('search-inmuebles').value||'').toLowerCase();
-  const ef=document.getElementById('filter-inm-estado').value;
-  const list=inmuebles.filter(i=>{
-    const m=i.nombre.toLowerCase().includes(q)||(i.propietario||'').toLowerCase().includes(q);
-    return m&&(!ef||i.estado===ef);
-  });
-  document.getElementById('tc-inmuebles').textContent=inmuebles.length;
-  const tbody=document.getElementById('inmuebles-tbody');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin inmuebles registrados — agrega uno con el botón de arriba</td></tr>';return;}
-  tbody.innerHTML=list.map(i=>`<tr>
-    <td><div class="name-cell"><div class="avatar" style="background:var(--salvia-l);color:var(--salvia)"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></div><div>${editableCell(i.id,'nombre',i.nombre)}</div></div></td>
-    <td>${editableCell(i.id,'propietario',i.propietario)}</td>
-    <td>${editableCell(i.id,'sector',i.sector)}</td>
-    <td>${editableCell(i.id,'tipo',i.tipo,'text',['Apartamento','Casa','Estudio','Local','Cabaña','Lote'])}</td>
-    <td>${editableCell(i.id,'estado',i.estado,'text',['Administrando','Disponible','Ocupado','Publicado','En negociación','En venta','Mantenimiento'])}</td>
-    <td>${editableCell(i.id,'plataforma',i.plataforma,'text',['Todas','Airbnb','Booking.com','Airbnb / Booking','Vrbo','Directo',''])}</td>
-    <td>${editableCell(i.id,'prioridad',i.prioridad,'text',['Alta','Media','Baja'])}</td>
-    <td>${editableCell(i.id,'nota',i.nota)}</td>
-    <td><button class="btn btn-red btn-xs" onclick="deleteInmueble(${i.id})">✕</button></td>
-  </tr>`).join('');
+  toast(`✅ ${rec.nombre} agregado`);
 }
 
 function openModalInmueble(){document.getElementById('inmueble-modal').classList.add('open');}
-function closeInmuebleModal(){document.getElementById('inmueble-modal').classList.remove('open');['i-nombre','i-propietario','i-sector','i-plataforma','i-nota'].forEach(id=>document.getElementById(id).value='');}
-
+function closeInmuebleModal(){
+  document.getElementById('inmueble-modal').classList.remove('open');
+  ['i-nombre','i-propietario','i-sector','i-nota'].forEach(id=>document.getElementById(id).value='');
+}
 function saveInmueble(){
   const nombre=document.getElementById('i-nombre').value.trim();
   if(!nombre){alert('El nombre es obligatorio.');return;}
-  inmuebles.push({
-    id:nextInmId++, nombre,
+  inmuebles.push({id:nextId++,nombre,
     propietario:document.getElementById('i-propietario').value.trim(),
     sector:document.getElementById('i-sector').value.trim(),
     tipo:document.getElementById('i-tipo').value,
     estado:document.getElementById('i-estado').value,
-    plataforma:document.getElementById('i-plataforma').value.trim(),
+    plataforma:document.getElementById('i-plataforma').value,
     prioridad:document.getElementById('i-prio').value,
     nota:document.getElementById('i-nota').value.trim(),
   });
-  closeInmuebleModal();
-  renderInmuebles(); renderDashboard();
+  persist(); closeInmuebleModal(); renderAll();
+  toast(`✅ ${nombre} agregado a Inmuebles`);
 }
 
-function deleteInmueble(id){
-  if(!confirm('¿Eliminar este inmueble?')) return;
-  inmuebles=inmuebles.filter(i=>i.id!==id);
-  renderInmuebles(); renderDashboard();
+// ── DELETE ────────────────────────────────────────
+let pendDelId=null,pendDelType=null;
+function askDelete(id,type){
+  pendDelId=id; pendDelType=type;
+  const arr=type==='lead'?leads:clientes;
+  document.getElementById('confirm-name').textContent=arr.find(x=>x.id===id)?.nombre||'este contacto';
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function askDeleteInm(id){
+  pendDelId=id; pendDelType='inmueble';
+  document.getElementById('confirm-name').textContent=inmuebles.find(x=>x.id===id)?.nombre||'este inmueble';
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirm(){pendDelId=null;pendDelType=null;document.getElementById('confirm-modal').classList.remove('open');}
+function doDelete(){
+  if(pendDelType==='lead') leads=leads.filter(x=>x.id!==pendDelId);
+  else if(pendDelType==='cliente') clientes=clientes.filter(x=>x.id!==pendDelId);
+  else inmuebles=inmuebles.filter(x=>x.id!==pendDelId);
+  persist(); closeConfirm(); closeDetail(); renderAll();
+  toast('Eliminado');
 }
 
-document.getElementById('inmueble-modal').addEventListener('click',function(e){if(e.target===this)closeInmuebleModal();});
+// Click outside modals
+['contact-modal','inmueble-modal','confirm-modal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+});
 
 // ── INIT ─────────────────────────────────────────
-updateCounts();
-document.getElementById('tc-inmuebles').textContent=inmuebles.length;
-renderDashboard();
+renderAll();
 </script>
 </body>
 </html>
