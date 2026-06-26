@@ -132,7 +132,7 @@
 
   /* ── PRIORITY TABLE ── */
   .priority-section { margin-top: 20px; }
-  .table-wrap { background: var(--white); border: 1px solid var(--border); border-top: none; border-radius: 0 8px 8px 8px; overflow: hidden; }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-top: none; border-radius: 0 8px 8px 8px; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
   thead th {
     background: var(--carbon); color: var(--white);
@@ -258,6 +258,25 @@
 
   svg { display: inline-block; vertical-align: middle; }
 
+
+  .inline-inp {
+    width: 100%; min-width: 80px; border: none; background: transparent;
+    font-size: 12px; color: var(--carbon); font-family: inherit;
+    padding: 2px 4px; border-radius: 4px; outline: none;
+    cursor: text; box-sizing: border-box;
+  }
+  .inline-inp:hover { background: var(--bg2); }
+  .inline-inp:focus { background: var(--white); border: 1px solid var(--salvia); box-shadow: 0 0 0 2px rgba(107,142,107,.15); cursor: text; }
+  .inline-sel {
+    width: 100%; min-width: 80px; border: none; background: transparent;
+    font-size: 11px; font-weight: 600; color: var(--carbon);
+    font-family: inherit; padding: 2px 4px; border-radius: 4px;
+    outline: none; cursor: pointer; box-sizing: border-box;
+  }
+  .inline-sel:hover { background: var(--bg2); }
+  .inline-sel:focus { background: var(--white); border: 1px solid var(--salvia); }
+  tbody td { padding: 8px 10px; }
+
   @media (max-width: 640px) {
     .metrics-grid { grid-template-columns: repeat(2, 1fr); }
     .fg2 { grid-template-columns: 1fr; }
@@ -350,8 +369,14 @@
     <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
       <table>
         <thead><tr>
-          <th>Nombre</th><th>Teléfono</th><th>Inmueble de interés</th>
-          <th>Etapa</th><th>Estado inmueble</th><th>Línea</th><th>Prioridad</th><th></th>
+          <th style="min-width:140px">Nombre</th>
+          <th style="min-width:120px">Teléfono</th>
+          <th style="min-width:150px">Inmueble de interés</th>
+          <th style="min-width:140px">Etapa</th>
+          <th style="min-width:130px">Estado inmueble</th>
+          <th style="min-width:120px">Línea</th>
+          <th style="min-width:90px">Prioridad</th>
+          <th style="width:80px"></th>
         </tr></thead>
         <tbody id="leads-tbody"></tbody>
       </table>
@@ -378,8 +403,15 @@
     <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
       <table>
         <thead><tr>
-          <th>Nombre</th><th>Teléfono</th><th>Inmueble</th>
-          <th>Etapa</th><th>Estado</th><th>Contrato</th><th>Prioridad</th><th>Pendiente</th><th></th>
+          <th style="min-width:140px">Nombre</th>
+          <th style="min-width:120px">Teléfono</th>
+          <th style="min-width:150px">Inmueble</th>
+          <th style="min-width:140px">Etapa</th>
+          <th style="min-width:130px">Estado</th>
+          <th style="min-width:120px">Contrato</th>
+          <th style="min-width:90px">Prioridad</th>
+          <th style="min-width:160px">Pendiente</th>
+          <th style="width:80px"></th>
         </tr></thead>
         <tbody id="clientes-tbody"></tbody>
       </table>
@@ -407,7 +439,15 @@
     <div class="table-wrap" style="border-top:1px solid var(--border);border-radius:8px;">
       <table>
         <thead><tr>
-          <th>Propiedad</th><th>Propietario</th><th>Sector</th><th>Tipo</th><th>Estado</th><th>Plataforma</th><th>Prioridad</th><th>Notas</th><th></th>
+          <th style="min-width:140px">Propiedad</th>
+          <th style="min-width:120px">Propietario</th>
+          <th style="min-width:110px">Sector</th>
+          <th style="min-width:120px">Tipo</th>
+          <th style="min-width:140px">Estado</th>
+          <th style="min-width:140px">Plataforma</th>
+          <th style="min-width:100px">Prioridad</th>
+          <th style="min-width:160px">Notas</th>
+          <th style="width:40px"></th>
         </tr></thead>
         <tbody id="inmuebles-tbody"></tbody>
       </table>
@@ -637,6 +677,21 @@ function renderDashboard(){
 }
 
 // ── LEADS TABLE ───────────────────────────────────
+function editField(arr, id, field, value, type, options){
+  if(options){
+    const opts=options.map(o=>`<option value="${o}"${o===value?' selected':''}>${o}</option>`).join('');
+    return `<select class="inline-sel" onchange="updateField('${arr}',${id},'${field}',this.value)">${opts}</select>`;
+  }
+  return `<input class="inline-inp" type="${type||'text'}" value="${value||''}" onblur="updateField('${arr}',${id},'${field}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">`;
+}
+function updateField(arr, id, field, value){
+  const list = arr==='leads'?leads:clientes;
+  const rec = list.find(x=>x.id===id);
+  if(!rec) return;
+  rec[field]=value;
+  if(arr==='leads') renderLeads(); else renderClientes();
+  renderDashboard();
+}
 function renderLeads(){
   const q=(document.getElementById('search-leads').value||'').toLowerCase();
   const ef=document.getElementById('filter-leads-etapa').value;
@@ -650,13 +705,13 @@ function renderLeads(){
   tbody.innerHTML=list.map(l=>{
     const av=avColor(l.nombre);
     return `<tr>
-      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(l.nombre)}</div><div><div class="cname">${l.nombre}</div><div class="csub">${l.tel||'—'}</div></div></div></td>
-      <td style="font-size:12px;color:var(--gray);">${l.tel||'—'}</td>
-      <td style="font-size:12px;">${l.inmueble||'—'}</td>
-      <td>${bdg(l.etapa,'etapa')}</td>
-      <td>${bdg(l.estadoInm,'estadoInm')}</td>
-      <td>${bdg(l.linea,'linea')}</td>
-      <td>${bdg(l.prioridad,'prioridad')}</td>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(l.nombre)}</div><div>${editField('leads',l.id,'nombre',l.nombre)}</div></div></td>
+      <td>${editField('leads',l.id,'tel',l.tel)}</td>
+      <td>${editField('leads',l.id,'inmueble',l.inmueble)}</td>
+      <td>${editField('leads',l.id,'etapa',l.etapa,'text',['Nuevo','Contactado','Visita agendada','Propuesta enviada','En negociación'])}</td>
+      <td>${editField('leads',l.id,'estadoInm',l.estadoInm,'text',['Disponible','Administrando','Ocupado','Publicado','En negociación','En venta'])}</td>
+      <td>${editField('leads',l.id,'linea',l.linea,'text',['Administración','Rentas cortas','Ventas','Proyectos'])}</td>
+      <td>${editField('leads',l.id,'prioridad',l.prioridad,'text',['Alta','Media','Baja'])}</td>
       <td><div class="row-actions">
         <button class="btn btn-outline btn-xs" onclick="openDetail(${l.id},'lead')">Ver</button>
         <button class="btn btn-red btn-xs" onclick="askDelete(${l.id},'lead')">✕</button>
@@ -679,14 +734,14 @@ function renderClientes(){
   tbody.innerHTML=list.map(c=>{
     const av=avColor(c.nombre);
     return `<tr>
-      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(c.nombre)}</div><div><div class="cname">${c.nombre}</div><div class="csub">${c.tel||'—'}</div></div></div></td>
-      <td style="font-size:12px;color:var(--gray);">${c.tel||'—'}</td>
-      <td style="font-size:12px;">${c.inmueble||'—'}</td>
-      <td>${bdg(c.etapa,'etapa')}</td>
-      <td>${bdg(c.estadoInm,'estadoInm')}</td>
-      <td>${bdg(c.contrato,'contrato')}</td>
-      <td>${bdg(c.prioridad,'prioridad')}</td>
-      <td style="font-size:11px;color:var(--gray);max-width:160px;">${c.nota||'—'}</td>
+      <td><div class="name-cell"><div class="avatar" style="background:${av.bg};color:${av.c}">${ini(c.nombre)}</div><div>${editField('clientes',c.id,'nombre',c.nombre)}</div></div></td>
+      <td>${editField('clientes',c.id,'tel',c.tel)}</td>
+      <td>${editField('clientes',c.id,'inmueble',c.inmueble)}</td>
+      <td>${editField('clientes',c.id,'etapa',c.etapa,'text',['Visita agendada','Propuesta enviada','En negociación','Cerrado'])}</td>
+      <td>${editField('clientes',c.id,'estadoInm',c.estadoInm,'text',['Disponible','Administrando','Ocupado','Publicado','En negociación','En venta'])}</td>
+      <td>${editField('clientes',c.id,'contrato',c.contrato,'text',['Pendiente','Pendiente firma','Firmado','Renovar'])}</td>
+      <td>${editField('clientes',c.id,'prioridad',c.prioridad,'text',['Alta','Media','Baja'])}</td>
+      <td>${editField('clientes',c.id,'nota',c.nota)}</td>
       <td><div class="row-actions">
         <button class="btn btn-outline btn-xs" onclick="openDetail(${c.id},'cliente')">Ver</button>
         <button class="btn btn-red btn-xs" onclick="askDelete(${c.id},'cliente')">✕</button>
@@ -825,6 +880,22 @@ let inmuebles = [
 ];
 let nextInmId = 110;
 
+function editableCell(id, field, value, type='text', options=null){
+  if(options){
+    const opts = options.map(o=>`<option value="${o}"${o===value?' selected':''}>${o}</option>`).join('');
+    return `<select class="inline-sel" onchange="updateInmueble(${id},'${field}',this.value)">${opts}</select>`;
+  }
+  return `<input class="inline-inp" type="${type}" value="${value||''}" onblur="updateInmueble(${id},'${field}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">`;
+}
+
+function updateInmueble(id, field, value){
+  const inm = inmuebles.find(i=>i.id===id);
+  if(!inm) return;
+  inm[field] = value;
+  renderInmuebles();
+  renderDashboard();
+}
+
 function renderInmuebles(){
   const q=(document.getElementById('search-inmuebles').value||'').toLowerCase();
   const ef=document.getElementById('filter-inm-estado').value;
@@ -834,16 +905,16 @@ function renderInmuebles(){
   });
   document.getElementById('tc-inmuebles').textContent=inmuebles.length;
   const tbody=document.getElementById('inmuebles-tbody');
-  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin inmuebles</td></tr>';return;}
+  if(!list.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Sin inmuebles registrados — agrega uno con el botón de arriba</td></tr>';return;}
   tbody.innerHTML=list.map(i=>`<tr>
-    <td><div class="name-cell"><div class="avatar" style="background:var(--salvia-l);color:var(--salvia)"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></div><div><div class="cname">${i.nombre}</div></div></div></td>
-    <td style="font-size:12px;">${i.propietario||'—'}</td>
-    <td style="font-size:12px;color:var(--gray);">${i.sector||'—'}</td>
-    <td style="font-size:12px;color:var(--gray);">${i.tipo||'—'}</td>
-    <td>${bdg(i.estado,'estadoInm')}</td>
-    <td style="font-size:12px;color:var(--gray);">${i.plataforma||'—'}</td>
-    <td>${bdg(i.prioridad,'prioridad')}</td>
-    <td style="font-size:11px;color:var(--gray);max-width:140px;">${i.nota||'—'}</td>
+    <td><div class="name-cell"><div class="avatar" style="background:var(--salvia-l);color:var(--salvia)"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></div><div>${editableCell(i.id,'nombre',i.nombre)}</div></div></td>
+    <td>${editableCell(i.id,'propietario',i.propietario)}</td>
+    <td>${editableCell(i.id,'sector',i.sector)}</td>
+    <td>${editableCell(i.id,'tipo',i.tipo,'text',['Apartamento','Casa','Estudio','Local','Cabaña','Lote'])}</td>
+    <td>${editableCell(i.id,'estado',i.estado,'text',['Administrando','Disponible','Ocupado','Publicado','En negociación','En venta','Mantenimiento'])}</td>
+    <td>${editableCell(i.id,'plataforma',i.plataforma,'text',['Todas','Airbnb','Booking.com','Airbnb / Booking','Vrbo','Directo',''])}</td>
+    <td>${editableCell(i.id,'prioridad',i.prioridad,'text',['Alta','Media','Baja'])}</td>
+    <td>${editableCell(i.id,'nota',i.nota)}</td>
     <td><button class="btn btn-red btn-xs" onclick="deleteInmueble(${i.id})">✕</button></td>
   </tr>`).join('');
 }
